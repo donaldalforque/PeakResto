@@ -1,0 +1,8 @@
+[POS Printer]
+bixolon srp-275ii
+[Order Printer]
+Epson TMU-220D
+[FASTFOOD]
+True
+[PrintDiscount]
+True

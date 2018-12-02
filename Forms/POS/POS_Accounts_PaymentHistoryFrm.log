@@ -1,0 +1,34 @@
+Line 33: Class MSComCtl2.DTPicker of control dtFrom was not a loaded control class.
+Line 92: Class MSComctlLib.ListView of control lvList was not a loaded control class.
+Line 172: Class MSComCtl2.DTPicker of control dtTo was not a loaded control class.
+Line 39: The property name _ExtentX in dtFrom is invalid.
+Line 40: The property name _ExtentY in dtFrom is invalid.
+Line 41: The property name _Version in dtFrom is invalid.
+Line 51: The property name Format in dtFrom is invalid.
+Line 52: The property name CurrentDate in dtFrom is invalid.
+Line 98: The property name _ExtentX in lvList is invalid.
+Line 99: The property name _ExtentY in lvList is invalid.
+Line 100: The property name View in lvList is invalid.
+Line 101: The property name LabelEdit in lvList is invalid.
+Line 102: The property name LabelWrap in lvList is invalid.
+Line 103: The property name HideSelection in lvList is invalid.
+Line 104: The property name Checkboxes in lvList is invalid.
+Line 105: The property name FullRowSelect in lvList is invalid.
+Line 106: The property name GridLines in lvList is invalid.
+Line 107: The property name _Version in lvList is invalid.
+Line 121: The property name NumItems in lvList is invalid.
+Line 124: The property name ColumnHeader(1) in lvList is invalid.
+Line 129: The property name ColumnHeader(2) in lvList is invalid.
+Line 134: The property name ColumnHeader(3) in lvList is invalid.
+Line 139: The property name ColumnHeader(4) in lvList is invalid.
+Line 144: The property name ColumnHeader(5) in lvList is invalid.
+Line 149: The property name ColumnHeader(6) in lvList is invalid.
+Line 154: The property name ColumnHeader(7) in lvList is invalid.
+Line 159: The property name ColumnHeader(8) in lvList is invalid.
+Line 164: The property name ColumnHeader(9) in lvList is invalid.
+Line 170: The property name ColumnHeader(10) in lvList is invalid.
+Line 178: The property name _ExtentX in dtTo is invalid.
+Line 179: The property name _ExtentY in dtTo is invalid.
+Line 180: The property name _Version in dtTo is invalid.
+Line 190: The property name Format in dtTo is invalid.
+Line 191: The property name CurrentDate in dtTo is invalid.

@@ -1,0 +1,164 @@
+****[Software 1.0.42]****
+[ADDED]
+1. Ingredients under BASE_NewProduct
+
+[MODIFIED]
+1.
+
+[REMOVED]
+1.
+
+****[DATABASE 1.0.42]****
+[--TABLE--]
+[ADDED]
+1. INV_Ingredients
+2. INV_InventoryByIngredientsSold
+3. INV_InventoryByIngredientsSold_Line
+
+[MODIFIED]
+1. BASE_Product
+	- added column isIngredientBased boolean
+2. PO_ReceiveOrder_Line
+	- added uom column
+3. SO_PickOrder_Line
+	- added uom column
+
+[REMOVED]
+1.
+
+[--PROCEDURE--]
+[ADDED]
+1. INV_Ingredients_Get
+2. INV_Ingredients_Insert
+3. INV_Ingredients_Delete
+4. RPT_ProductByIngredients
+5. BASE_Product_Search_Barcode
+6. RPT_INV_InventoryByIngredients
+7. INV_InventoryByIngredientsSoldLine_Insert
+8. INV_InventoryByIngredientsSold_Insert
+
+[MODIFIED]
+1. INV_Uom_Insert
+2. BASE_Product_Insert
+3. BASE_Product_Update
+4. BASE_Product_Get
+5. PO_ReceiveOrder_Line
+6. SO_PickOrderLine_Insert
+
+
+[REMOVED]
+1.
+
+****[REPORTS 1.0.42]****
+[ADDED]
+1. INV_InventoryByIngredients 
+2.
+
+[MODIFIED]
+1. INV_InventorySummary
+
+[REMOVED]
+1.
+
+----------------------------------------------------------
+****[Software 1.0.41]****
+[Feature]
+1. -ADDED View function on Saved Orders
+2. -CHANGED "Save Order" to "Dine-In"
+3. -ADDED POS Settings "Refresh Interval"
+4. -ADDED Feature Notify CHEF on ORDERS
+5. -ADDED Feature Notify cashier FOR Ready Orders
+6. -ADDED Accounts Receivable in POS!!
+7. -ADDED Sales Order Companies
+
+****[Database 1.0.41]****
+[Table]
+1. POS_RefreshInterval - Default 1500 minutes
+2. POS_LastOrderCheck - Default 01/01/16
+3. POS_Order_Status
+4. UPDATE POS_Order > NEW Column POS_OrderStatusId -defa 1
+5. GLOBAL_DocNoFormat - New Row "POS-AR" - 1
+6. POS_Accounts
+7. POS_Accounts_Line
+8. SO_Company
+9. POS_Accounts_Payment
+
+[Procedure]
+1. POS_RefreshInterval_Update
+2. POS_RefreshInterval_Get
+3. POS_OrderCheck
+4. UPDATE POS_Order_Get
+5. POS_OrderStatus_Get
+6. POS_OrderStatus_Update
+7. POS_OrderUpdate_Check
+8. POS_Accounts_Insert
+9. POS_Accounts_Update
+10. POS_AccountsLine_Insert
+11. POS_AccountsLine_Delete
+12. SO_Company_Insert
+13. SO_Company_Update
+14. SO_Company_Get
+15. POS_Accounts_Get
+16. POS_Accounts_Delete
+17. POS_AccountsPayment_Insert
+18. POS_AccountsPayment_Delete
+19. POS_AccountsPayment_Get
+20. RPT_POS_Accounts_Get
+
+[Reports]
+1. POS_AccountsReceipt.rpt
+2. POS_AccountsSummary.rpt
+3. POS_CurrentAccountsReceipt.rpt
+
+****[Software 1.0.40]****
+[Feature]
+1.-ADDED POS can save orders for later preview and processing
+2.-ADDED POS can view reports using receipt printer
+	- all reports filtered by date range, cashier, customer
+3.-ADDED POS Orders from previous date automatically cancelled
+
+5.-ADDED TouchKeyboard on POS customers
+6.-UPDATED POS Button (F1:About) to (F1:Save Order)
+7.-UPDATED POS Button (F6:Payout) to (F6:Orders)
+8.-UPDATE POS Main Screen, Shift+Escape to cancel transaction.
+
+[Reports]
+1.-ADDED POS Sales by Product Inventory
+	POS_RPT_SalesByProductInventory.rpt
+3.-ADDED POS Sales by Product Discount
+	POS_RPT_SalesByProductDiscount.rpt
+5.-UPDATED POS_SalesByProduct
+	- added tax column
+	- added discount column
+6. RPT_POS_SalesByProductInventory.RPT
+
+****[Database 1.0.40]****
+[Table]
+1.-ADDED POS_Order
+2.-ADDED POS_Order_Line
+
+[Data]
+1.-UPDATED POS_UserValidation, data "Payout" to "Orders"
+2.-ADDED GLobal_DocNoFormat ID=6,1,""
+
+[Procedure]
+1. POS_Order_Insert
+2. POS_Order_Update
+3. POS_Order_Delete
+4. POS_Order_Get
+5. POS_OrderLine_Insert
+6. POS_OrderLine_Delete
+7. POS_OrderLine_Get
+8. POS_RPT_SalesByProduct
+
+****[Software 1.0.39]****
+
+-ADDED 
+[Executable]
+1. Touch Keyboard
+	- sales return
+	- discount
+2. Discount
+	- discount by item
+	- discount by total
+

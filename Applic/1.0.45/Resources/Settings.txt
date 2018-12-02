@@ -1,0 +1,4 @@
+[POS Printer]
+Microsoft XPS Document Writer
+[Order Printer]
+Epson TMU-220D

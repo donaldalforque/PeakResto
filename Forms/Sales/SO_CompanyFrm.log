@@ -1,0 +1,33 @@
+Line 55: Class MSComctlLib.ListView of control lvCompany was not a loaded control class.
+Line 99: Class MSComctlLib.Toolbar of control tb_Standard was not a loaded control class.
+Line 134: Class MSComctlLib.ImageList of control ImageList1 was not a loaded control class.
+Line 61: The property name _ExtentX in lvCompany is invalid.
+Line 62: The property name _ExtentY in lvCompany is invalid.
+Line 63: The property name View in lvCompany is invalid.
+Line 64: The property name LabelEdit in lvCompany is invalid.
+Line 65: The property name LabelWrap in lvCompany is invalid.
+Line 66: The property name HideSelection in lvCompany is invalid.
+Line 67: The property name Checkboxes in lvCompany is invalid.
+Line 68: The property name FullRowSelect in lvCompany is invalid.
+Line 69: The property name GridLines in lvCompany is invalid.
+Line 70: The property name _Version in lvCompany is invalid.
+Line 84: The property name NumItems in lvCompany is invalid.
+Line 87: The property name ColumnHeader(1) in lvCompany is invalid.
+Line 92: The property name ColumnHeader(2) in lvCompany is invalid.
+Line 97: The property name ColumnHeader(3) in lvCompany is invalid.
+Line 105: The property name _ExtentX in tb_Standard is invalid.
+Line 106: The property name _ExtentY in tb_Standard is invalid.
+Line 107: The property name ButtonWidth in tb_Standard is invalid.
+Line 108: The property name ButtonHeight in tb_Standard is invalid.
+Line 109: The property name Style in tb_Standard is invalid.
+Line 110: The property name TextAlignment in tb_Standard is invalid.
+Line 111: The property name ImageList in tb_Standard is invalid.
+Line 112: The property name _Version in tb_Standard is invalid.
+Line 132: The property name Buttons in tb_Standard is invalid.
+Line 137: The property name _ExtentX in ImageList1 is invalid.
+Line 138: The property name _ExtentY in ImageList1 is invalid.
+Line 140: The property name ImageWidth in ImageList1 is invalid.
+Line 141: The property name ImageHeight in ImageList1 is invalid.
+Line 142: The property name MaskColor in ImageList1 is invalid.
+Line 143: The property name _Version in ImageList1 is invalid.
+Line 162: The property name Images in ImageList1 is invalid.

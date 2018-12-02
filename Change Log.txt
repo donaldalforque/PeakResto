@@ -1,0 +1,61 @@
+CHANGE LOG November 24, 2015
+
+GLOBAL DOC_STATUS
+Invoiced = 4
+Picking = 5
+
+so_Invoice
+so_invoice_line
+
+so_salesOrder
+InvoicedAmount
+
+SO_SalesOrder_line
+PickedQuantity
+
+SO_SalesOrderLine_Get
+pickedquantity
+
+SO_SalesOrder_insert
+RemainingBalance = 0
+
+SO_SalesOrder_Get
+--And Balance > 0 - e comment
+
+so_pickOrder
+so_pickOrder_Line
+
+
+CHANGE LOG November 25, 2015
+POS_Zreading_Get
+POS_Xreading_Get
+
+zreading.rpt
+xreading.rpt
+so_salesorder.rpt
+
+pos_salesreturninvoice_search
+pos_salesreturn_invoice_insert
+
+pos_Salesreturn table
+
+pos_salesReturnSlip_get
+
+INV_UomConversion
+UomConversionId
+ProductId
+UomId
+Price
+ToQty
+
+POS_Zreading_Get
+
+December 2, 2015
+SalesOrderSummary.Rpt
+SalesOrderByProductDetails.rpt
+posbyproductdetails.rpt
+RPT_INV_InventoryBySales - Procedure
+RPT_SOSalesByProduct - PROCEDURE
+
+december 3, 2015
+rpt_inv_inventorybysales - procedure
