@@ -5,8 +5,8 @@ Sub Main()
     GetPOSPrintSettings
     AllowNegativeInventory = True
     
-    'BASE_UserLoginFrm.Show
-    POS_UserLoginFrm.Show
+    BASE_UserLoginFrm.Show
+    'POS_UserLoginFrm.Show
     'POS_OrdersFrm.Show
     
     If isFastfood = "True" Then

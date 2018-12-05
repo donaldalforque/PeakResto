@@ -195,6 +195,65 @@ Private Sub btnAccept_Click()
         End If
     End If
     
+    If lvDiscount.SelectedItem.SubItems(1) = "2" Then 'Senior Citizen
+        Dim TotalPerson As String
+        Dim TotalSenior As String
+        
+        TotalPerson = InputBox("Please enter total # of customers:", "# of Customer")
+        
+        If NVAL(TotalPerson) = 0 Then
+            MsgBox "Invalid number of customer.", vbCritical
+            Exit Sub
+        ElseIf IsNumeric(TotalPerson) = False Then
+            MsgBox "Invalid number of customer.", vbCritical
+            Exit Sub
+        End If
+        
+        TotalSenior = InputBox("Please enter total # of Senior Citizen:", "# of Senior Citizen")
+        
+        If NVAL(TotalSenior) = 0 Then
+            MsgBox "Invalid number of senior citizen.", vbCritical
+            Exit Sub
+        ElseIf IsNumeric(TotalSenior) = False Then
+            MsgBox "Invalid number of senior citizen.", vbCritical
+            Exit Sub
+        End If
+        
+        'Apply to all items
+        Dim Total As Double
+        Dim SeniorDiscount As Double
+        Dim TotalTax As Double
+        Dim TotalItems As Double
+        Dim TaxPerPerson As Double
+        Dim TaxForSenior As Double
+        Dim TotalNetOfVat As Double
+        Dim TotalNetOfVatPerPerson As Double
+        
+        For Each item In POS_CashierFrm.lvList.ListItems
+            TotalTax = TotalTax + NVAL(item.SubItems(14))
+        Next
+        
+        TaxPerPerson = TotalTax / TotalPerson
+        TaxForSenior = TaxPerPerson * TotalSenior
+        Total = NVAL(POS_CashierFrm.txtTotal.Caption)
+        TotalNetOfVat = Total - TotalTax
+        TotalNetOfVatPerPerson = TotalNetOfVat / TotalPerson
+        SeniorDiscount = ((TotalNetOfVatPerPerson * TotalSenior) * (lvDiscount.SelectedItem.SubItems(3) / 100)) + TaxPerPerson
+        SeniorDiscount = SeniorDiscount / POS_CashierFrm.lvList.ListItems.Count
+        
+        For Each item In POS_CashierFrm.lvList.ListItems
+            item.SubItems(4) = FormatNumber(SeniorDiscount, 2, vbTrue, vbFalse)
+            item.SubItems(17) = FormatNumber(SeniorDiscount, 2, vbTrue, vbFalse)
+            item.SubItems(15) = "Senior"
+        Next
+        
+        POS_CashierFrm.CountTotal
+        POS_CashierFrm.CountTax
+        Unload Me
+        
+        Exit Sub
+    End If
+    
     x = MsgBox("Do you want to apply discount for all items?", vbQuestion + vbYesNo)
     If x = vbYes Then
         'Dim item As MSComctlLib.ListItem

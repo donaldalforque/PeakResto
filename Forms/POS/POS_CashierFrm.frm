@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form POS_CashierFrm 
    BackColor       =   &H00E0E0E0&
    BorderStyle     =   0  'None
@@ -840,7 +840,7 @@ Begin VB.Form POS_CashierFrm
       BeginProperty ColumnHeader(5) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Alignment       =   1
          SubItemIndex    =   4
-         Text            =   "DISC(%)"
+         Text            =   "DISC"
          Object.Width           =   2540
       EndProperty
       BeginProperty ColumnHeader(6) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
@@ -915,7 +915,7 @@ Begin VB.Form POS_CashierFrm
       EndProperty
       BeginProperty ColumnHeader(20) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   19
-         Text            =   "OrderId"
+         Text            =   "Total Discount in Percent"
          Object.Width           =   0
       EndProperty
       BeginProperty ColumnHeader(21) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
@@ -997,7 +997,7 @@ Public Sub Initialize()
     
 End Sub
 Public Sub CountTotal_old()
-    Dim totalItems, totalQty, Itemdiscount As Double
+    Dim TotalItems, totalQty, Itemdiscount As Double
     Dim item As MSComctlLib.ListItem
     txtTotal.Caption = "0.00"
     For Each item In lvList.ListItems
@@ -1015,30 +1015,29 @@ Public Sub CountTotal_old()
     lblTotalItems.Caption = "TOTAL ITEMS: " & FormatNumber(totalQty, 2, vbTrue, vbFalse)
 End Sub
 Public Sub CountTotal()
-    Dim totalItems, totalQty, Itemdiscount, noTax, vat As Double
+    Dim TotalItems, totalQty, Itemdiscount, noTax, vat As Double
     Dim item As MSComctlLib.ListItem
     txtTotal.Caption = "0.00"
     For Each item In lvList.ListItems
-        'Itemdiscount = (Val(Replace(Item.SubItems(3), ",", "")) * (Val(Replace(Item.SubItems(4), ",", "")) / 100)) * Val(Replace(Item.SubItems(1), ",", ""))
-                
-        If item.SubItems(20) = "True" Then 'TAX EXEMPTED
-            noTax = Val(Replace(item.SubItems(3), ",", "")) / ((Val(Replace(item.SubItems(13), ",", "")) + 100) / 100)
-            vat = Val(Replace(item.SubItems(3), ",", "")) - noTax
-            Itemdiscount = (noTax * (Val(Replace(item.SubItems(19), ",", "")) / 100)) * Val(Replace(item.SubItems(1), ",", "")) + vat
-            item.SubItems(17) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
-            item.SubItems(4) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
+        If item.SubItems(15) <> "Senior" Then
+            If item.SubItems(20) = "True" Then 'TAX EXEMPTED
+                noTax = NVAL(item.SubItems(3)) / ((NVAL(item.SubItems(13)) + 100) / 100)
+                vat = NVAL(item.SubItems(3)) - noTax
+                Itemdiscount = (noTax * (NVAL(item.SubItems(19)) / 100)) * NVAL(item.SubItems(1)) + vat
+                item.SubItems(17) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
+                item.SubItems(4) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
+            Else
+                Itemdiscount = (NVAL(item.SubItems(3)) * (NVAL(item.SubItems(19)) / 100)) * NVAL(item.SubItems(1))
+                item.SubItems(17) = Itemdiscount
+                item.SubItems(4) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
+            End If
         Else
-            Itemdiscount = (Val(Replace(item.SubItems(3), ",", "")) * (Val(Replace(item.SubItems(19), ",", "")) / 100)) * Val(Replace(item.SubItems(1), ",", ""))
-            item.SubItems(17) = Itemdiscount
-            item.SubItems(4) = FormatNumber(Itemdiscount, 2, vbTrue, vbFalse)
+            Itemdiscount = item.SubItems(4)
         End If
         
-        'Itemdiscount = (Val(Replace(item.SubItems(4), ",", ""))) '* -1
-        
-        item.SubItems(5) = FormatNumber(Val(Replace(item.SubItems(1), ",", "")) * Val(Replace(item.SubItems(3), ",", "")) - Itemdiscount, 2, vbTrue)
-        txtTotal.Caption = txtTotal.Caption + Val(Replace(item.SubItems(5), ",", ""))
-        totalQty = totalQty + Val(Val(Replace(item.SubItems(1), ",", "")))
-        'TotalDiscount = TotalDiscount + (Itemdiscount * -1)
+        item.SubItems(5) = FormatNumber(NVAL(item.SubItems(1)) * NVAL(item.SubItems(3)) - Itemdiscount, 2, vbTrue)
+        txtTotal.Caption = txtTotal.Caption + NVAL(item.SubItems(5))
+        totalQty = totalQty + NVAL(item.SubItems(1))
     Next
     txtTotal.Caption = FormatNumber(txtTotal.Caption, 2, vbTrue)
     lblTotalItems.Caption = "TOTAL ITEMS: " & FormatNumber(totalQty, 2, vbTrue, vbFalse)
@@ -1277,8 +1276,8 @@ Private Sub btnQuantity_Click()
 End Sub
 
 Private Sub btnQuit_Click()
-    X = MsgBox("Are you sure you want to quit?", vbYesNo + vbQuestion)
-    If X = vbYes Then
+    x = MsgBox("Are you sure you want to quit?", vbYesNo + vbQuestion)
+    If x = vbYes Then
         Unload Me
         
         'RECORD LOGOUT
@@ -1393,8 +1392,8 @@ Private Sub btnVoid_Click()
     End If
     
     If AllowAccess = True Then
-        X = MsgBox("Are you sure you want to cancel this transaction?", vbYesNo + vbCritical)
-        If X = vbYes Then
+        x = MsgBox("Are you sure you want to cancel this transaction?", vbYesNo + vbCritical)
+        If x = vbYes Then
             'save audit trail
             SavePOSAuditTrail UserId, WorkstationId, 0, "CANCEL ORDER. AMOUNT: " & txtTotal.Caption
             

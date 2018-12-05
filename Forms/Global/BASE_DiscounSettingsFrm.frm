@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form BASE_DiscountSettingsFrm 
    BorderStyle     =   3  'Fixed Dialog
    ClientHeight    =   6495
@@ -409,19 +409,21 @@ On Error GoTo ErrorHandler:
             
             'Check for Deactivate/Activated Lists
             For Each item In lvDiscount.ListItems
-                Set cmd = New ADODB.Command
-                cmd.ActiveConnection = con
-                cmd.CommandType = adCmdStoredProc
-                cmd.CommandText = "BASE_Discount_Update"
-                cmd.Parameters.Append cmd.CreateParameter("@DiscountId", adInteger, adParamInputOutput, , item.SubItems(1))
-                cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.SubItems(2))
-                cmd.Parameters.Append cmd.CreateParameter("@Percentage", adInteger, adParamInput, , item.SubItems(3))
-                cmd.Parameters.Append cmd.CreateParameter("@isTaxExempt", adBoolean, adParamInput, , item.SubItems(4))
-                cmd.Parameters.Append cmd.CreateParameter("@isAmountBased", adBoolean, adParamInput, , item.SubItems(5))
-                cmd.Parameters.Append cmd.CreateParameter("@isActive", adBoolean, adParamInput, , item.Checked)
-                cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , UserId)
-                cmd.Parameters.Append cmd.CreateParameter("@WorkStationId", adInteger, adParamInput, , WorkstationId)
-                cmd.Execute
+                If item.SubItems(1) > 2 Then
+                    Set cmd = New ADODB.Command
+                    cmd.ActiveConnection = con
+                    cmd.CommandType = adCmdStoredProc
+                    cmd.CommandText = "BASE_Discount_Update"
+                    cmd.Parameters.Append cmd.CreateParameter("@DiscountId", adInteger, adParamInputOutput, , item.SubItems(1))
+                    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.SubItems(2))
+                    cmd.Parameters.Append cmd.CreateParameter("@Percentage", adInteger, adParamInput, , item.SubItems(3))
+                    cmd.Parameters.Append cmd.CreateParameter("@isTaxExempt", adBoolean, adParamInput, , item.SubItems(4))
+                    cmd.Parameters.Append cmd.CreateParameter("@isAmountBased", adBoolean, adParamInput, , item.SubItems(5))
+                    cmd.Parameters.Append cmd.CreateParameter("@isActive", adBoolean, adParamInput, , item.Checked)
+                    cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , UserId)
+                    cmd.Parameters.Append cmd.CreateParameter("@WorkStationId", adInteger, adParamInput, , WorkstationId)
+                    cmd.Execute
+                End If
             Next
             
             If Trim(txtName.Text) = "" Then
@@ -465,23 +467,28 @@ On Error GoTo ErrorHandler:
                     item.EnsureVisible
             Else
                 cmd.CommandText = "BASE_Discount_Update"
-                cmd.Execute
+                If DiscountId > 2 Then
+                    cmd.Execute
+                End If
+                
                 For Each item In lvDiscount.ListItems
-                    If item.SubItems(1) = DiscountId Then
-                        item.SubItems(2) = txtName.Text
-                        item.SubItems(3) = txtPercentage.Text
-                        If chkTaxExempt.value = Checked Then
-                            item.SubItems(4) = "True"
-                        Else
-                            item.SubItems(4) = "False"
+                    If item.SubItems(1) > 2 Then
+                        If item.SubItems(1) = DiscountId Then
+                            item.SubItems(2) = txtName.Text
+                            item.SubItems(3) = txtPercentage.Text
+                            If chkTaxExempt.value = Checked Then
+                                item.SubItems(4) = "True"
+                            Else
+                                item.SubItems(4) = "False"
+                            End If
+                            If chkAmount.value = Checked Then
+                                item.SubItems(5) = "True"
+                            Else
+                                item.SubItems(5) = "False"
+                            End If
+                            item.Selected = True
+                            item.EnsureVisible
                         End If
-                        If chkAmount.value = Checked Then
-                            item.SubItems(5) = "True"
-                        Else
-                            item.SubItems(5) = "False"
-                        End If
-                        item.Selected = True
-                        item.EnsureVisible
                     End If
                 Next
             End If

@@ -499,8 +499,8 @@ Option Explicit
 
 Public Sub ComputeChange()
     Dim change As Double
-    change = Val(Replace(lblAmountDue.Caption, ",", "")) - Val(Replace(txtCash.text, ",", "")) - Val(Replace(txtCard.text, ",", "")) _
-            - Val(Replace(txtCheck.text, ",", "")) - Val(Replace(txtLoyalty.text, ",", "")) - Val(Replace(txtOthers.text, ",", ""))
+    change = Val(Replace(lblAmountDue.Caption, ",", "")) - Val(Replace(txtCash.Text, ",", "")) - Val(Replace(txtCard.Text, ",", "")) _
+            - Val(Replace(txtCheck.Text, ",", "")) - Val(Replace(txtLoyalty.Text, ",", "")) - Val(Replace(txtOthers.Text, ",", ""))
     lblChange.Caption = FormatNumber(change, 2, vbTrue, vbFalse)
 End Sub
 
@@ -514,11 +514,11 @@ Private Sub btnAccept_Click()
     
     due = Val(Replace(lblAmountDue.Caption, ",", ""))
     
-    cash = Val(Replace(txtCash.text, ",", ""))
-    Card = Val(Replace(txtCard.text, ",", ""))
-    Check = Val(Replace(txtCheck.text, ",", ""))
-    Loyalty = Val(Replace(txtLoyalty.text, ",", ""))
-    OtherPayment = Val(Replace(txtOthers.text, ",", ""))
+    cash = Val(Replace(txtCash.Text, ",", ""))
+    Card = Val(Replace(txtCard.Text, ",", ""))
+    Check = Val(Replace(txtCheck.Text, ",", ""))
+    Loyalty = Val(Replace(txtLoyalty.Text, ",", ""))
+    OtherPayment = Val(Replace(txtOthers.Text, ",", ""))
     
     SumPayment = cash + Card + Check + Loyalty + OtherPayment
     
@@ -570,7 +570,7 @@ Private Sub btnAccept_Click()
         cmd.Parameters.Append cmd.CreateParameter("@Subtotal", adDecimal, adParamInput, , Null)
                               cmd.Parameters("@Subtotal").NumericScale = 2
                               cmd.Parameters("@Subtotal").Precision = 18
-        cmd.Parameters.Append cmd.CreateParameter("@Tendered", adDecimal, adParamInput, , Val(Replace(txtCash.text, ",", "")))
+        cmd.Parameters.Append cmd.CreateParameter("@Tendered", adDecimal, adParamInput, , Val(Replace(txtCash.Text, ",", "")))
                               cmd.Parameters("@Tendered").NumericScale = 2
                               cmd.Parameters("@Tendered").Precision = 18
         cmd.Parameters.Append cmd.CreateParameter("@DiscountType", adVarChar, adParamInput, 250, POS_CashierFrm.DiscountType)
@@ -611,7 +611,7 @@ Private Sub btnAccept_Click()
             cmd.Parameters.Append cmd.CreateParameter("@POS_SalesId", adInteger, adParamInput, , Val(POS_SalesId))
             cmd.Parameters.Append cmd.CreateParameter("@ProductId", adInteger, adParamInput, , item.SubItems(8))
             cmd.Parameters.Append cmd.CreateParameter("@Unit", adVarChar, adParamInput, 50, item.SubItems(2))
-            cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.text)
+            cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.Text)
             cmd.Parameters.Append cmd.CreateParameter("@Price", adDecimal, adParamInput, , Val(Replace(item.SubItems(3), ",", "")))
                                   cmd.Parameters("@Price").NumericScale = 2
                                   cmd.Parameters("@Price").Precision = 18
@@ -645,7 +645,7 @@ Private Sub btnAccept_Click()
         'SAVE PAYMENTS
         
         'CardInfo
-        If CardInfo.Amount > 0 Then
+        If CardInfo.amount > 0 Then
             Set cmd = New ADODB.Command
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
@@ -656,14 +656,14 @@ Private Sub btnAccept_Click()
             cmd.Parameters.Append cmd.CreateParameter("@Cardnumber", adVarChar, adParamInput, 250, CardInfo.CardNumber)
             cmd.Parameters.Append cmd.CreateParameter("@CardTypeId", adInteger, adParamInput, , CardInfo.CardTypeId)
             cmd.Parameters.Append cmd.CreateParameter("@ReferenceNumber", adVarChar, adParamInput, 250, CardInfo.Reference)
-            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , CardInfo.Amount)
+            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , CardInfo.amount)
                                   cmd.Parameters("@Amount").NumericScale = 2
                                   cmd.Parameters("@Amount").Precision = 18
             cmd.Execute
         End If
         
         'checkinfo
-        If CheckInfo.Amount > 0 Then
+        If CheckInfo.amount > 0 Then
             Set cmd = New ADODB.Command
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
@@ -672,7 +672,7 @@ Private Sub btnAccept_Click()
             cmd.Parameters.Append cmd.CreateParameter("@BankId", adInteger, adParamInput, , CheckInfo.BankId)
             cmd.Parameters.Append cmd.CreateParameter("@CheckDate", adDate, adParamInput, , CheckInfo.CheckDate)
             cmd.Parameters.Append cmd.CreateParameter("@CheckNumber", adVarChar, adParamInput, 250, CheckInfo.CheckNumber)
-            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , CheckInfo.Amount)
+            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , CheckInfo.amount)
                                   cmd.Parameters("@Amount").NumericScale = 2
                                   cmd.Parameters("@Amount").Precision = 18
             cmd.Execute
@@ -720,14 +720,14 @@ Private Sub btnAccept_Click()
         End If
         
         'OtherPayment
-        If OtherInfo.Amount > 0 Then
+        If OtherInfo.amount > 0 Then
             Set cmd = New ADODB.Command
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
             cmd.CommandText = "POS_OtherPayment_Insert"
             cmd.Parameters.Append cmd.CreateParameter("@POS_SalesId", adInteger, adParamInput, , Val(POS_SalesId))
             cmd.Parameters.Append cmd.CreateParameter("@Reference", adVarChar, adParamInput, 250, OtherInfo.ReferenceNumber)
-            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , OtherInfo.Amount)
+            cmd.Parameters.Append cmd.CreateParameter("@Amount", adDecimal, adParamInput, , OtherInfo.amount)
                                   cmd.Parameters("@Amount").NumericScale = 2
                                   cmd.Parameters("@Amount").Precision = 18
             cmd.Parameters.Append cmd.CreateParameter("@Remarks", adVarChar, adParamInput, 250, OtherInfo.Remarks)
@@ -834,10 +834,10 @@ ErrMessage:
     txtCash.Enabled = True
     If IsNumeric(Err.Description) = True Then
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
-        BASE_ContainerFrm.statusBar_Main.Panels(1).text = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
+        BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
     Else
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & Err.Description
-        BASE_ContainerFrm.statusBar_Main.Panels(1).text = ErrorCodes(0) & " " & Err.Description
+        BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & Err.Description
     End If
         GLOBAL_MessageFrm.Show (1)
 End Sub
@@ -911,8 +911,8 @@ Private Sub txtCard_GotFocus()
 End Sub
 
 Private Sub txtCash_Change()
-    If IsNumeric(txtCash.text) = False Then
-        txtCash.text = "0.00"
+    If IsNumeric(txtCash.Text) = False Then
+        txtCash.Text = "0.00"
         selectText txtCash
     End If
     ComputeChange
