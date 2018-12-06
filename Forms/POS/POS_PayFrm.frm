@@ -587,6 +587,8 @@ Private Sub btnAccept_Click()
         cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , UserId)
         cmd.Parameters.Append cmd.CreateParameter("@WorkStationid", adInteger, adParamInput, , WorkstationId)
         cmd.Parameters.Append cmd.CreateParameter("@Remarks", adVarChar, adParamInput, 250, Null)
+        cmd.Parameters.Append cmd.CreateParameter("@FoodBillNumber", adVarChar, adParamInput, 250, POS_CashierFrm.FoodBillNumber)
+        cmd.Parameters.Append cmd.CreateParameter("@TableNumber", adVarChar, adParamInput, 250, POS_CashierFrm.TableNumber)
         cmd.Execute
         
         POS_SalesId = cmd.Parameters("@POS_SalesId")

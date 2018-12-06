@@ -971,6 +971,7 @@ Public TotalDiscount As Double
 Public POSCustomerId As Integer
 Public POSOrderId As String
 Public TableNumber As String
+Public FoodBillNumber As String
 Dim DiscountPass, SalesReturnPass, OrdersPass, ReprintPass, ItemDeletePass, VoidOrderPass, XreadingPass, ZReadingPass As Boolean
 Public DiscountType As String
 
@@ -991,13 +992,14 @@ Public Sub Initialize()
     POSOrderId = 0
     TableNumber = ""
     DiscountType = ""
+    FoodBillNumber = ""
     
     On Error Resume Next
     txtBarcode.SetFocus
     
 End Sub
 Public Sub CountTotal_old()
-    Dim TotalItems, totalQty, Itemdiscount As Double
+    Dim totalItems, totalQty, Itemdiscount As Double
     Dim item As MSComctlLib.ListItem
     txtTotal.Caption = "0.00"
     For Each item In lvList.ListItems
@@ -1015,7 +1017,7 @@ Public Sub CountTotal_old()
     lblTotalItems.Caption = "TOTAL ITEMS: " & FormatNumber(totalQty, 2, vbTrue, vbFalse)
 End Sub
 Public Sub CountTotal()
-    Dim TotalItems, totalQty, Itemdiscount, noTax, vat As Double
+    Dim totalItems, totalQty, Itemdiscount, noTax, vat As Double
     Dim item As MSComctlLib.ListItem
     txtTotal.Caption = "0.00"
     For Each item In lvList.ListItems

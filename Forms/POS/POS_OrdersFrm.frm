@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form POS_OrdersFrm 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Orders"
@@ -14,6 +14,25 @@ Begin VB.Form POS_OrdersFrm
    ScaleHeight     =   9255
    ScaleWidth      =   12615
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton btnPrint 
+      Caption         =   "F1:Print"
+      BeginProperty Font 
+         Name            =   "Segoe UI"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   850
+      Left            =   4680
+      Picture         =   "POS_OrdersFrm.frx":0000
+      Style           =   1  'Graphical
+      TabIndex        =   10
+      Top             =   8280
+      Width           =   1935
+   End
    Begin VB.CommandButton btnDelete 
       Caption         =   "DEL: Delete"
       BeginProperty Font 
@@ -27,7 +46,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   1800
-      Picture         =   "POS_OrdersFrm.frx":0000
+      Picture         =   "POS_OrdersFrm.frx":2228
       Style           =   1  'Graphical
       TabIndex        =   9
       Top             =   8280
@@ -51,7 +70,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   6720
-      Picture         =   "POS_OrdersFrm.frx":238F
+      Picture         =   "POS_OrdersFrm.frx":45B7
       Style           =   1  'Graphical
       TabIndex        =   8
       Top             =   8280
@@ -70,7 +89,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   120
-      Picture         =   "POS_OrdersFrm.frx":2992
+      Picture         =   "POS_OrdersFrm.frx":4BBA
       Style           =   1  'Graphical
       TabIndex        =   4
       Top             =   8280
@@ -89,7 +108,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   10920
-      Picture         =   "POS_OrdersFrm.frx":4D66
+      Picture         =   "POS_OrdersFrm.frx":6F8E
       Style           =   1  'Graphical
       TabIndex        =   5
       Top             =   8280
@@ -132,7 +151,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   8640
-      Picture         =   "POS_OrdersFrm.frx":70F5
+      Picture         =   "POS_OrdersFrm.frx":931D
       Style           =   1  'Graphical
       TabIndex        =   3
       Top             =   8280
@@ -245,7 +264,7 @@ Begin VB.Form POS_OrdersFrm
    Begin VB.Image picModuleImage 
       Height          =   480
       Left            =   120
-      Picture         =   "POS_OrdersFrm.frx":7690
+      Picture         =   "POS_OrdersFrm.frx":98B8
       Top             =   120
       Width           =   480
    End
@@ -281,7 +300,7 @@ Private Sub Populate()
             Set item = lvList.ListItems.add(, , rec!POS_OrderId)
                 item.SubItems(1) = rec!pos_ordernumber
                 item.SubItems(2) = rec!TableNumber
-                item.SubItems(3) = FormatNumber(rec!total, 2, vbTrue, vbFalse)
+                item.SubItems(3) = FormatNumber(rec!Total, 2, vbTrue, vbFalse)
                 If IsNull(rec!Name) Then
                     item.SubItems(4) = ""
                 Else
@@ -314,7 +333,7 @@ Private Sub btnDelete_Click()
         cmd.ActiveConnection = con
         cmd.CommandType = adCmdStoredProc
         cmd.CommandText = "POS_Order_Delete"
-        cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , lvList.SelectedItem.text)
+        cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , lvList.SelectedItem.Text)
         cmd.Execute
         con.Close
         lvList.ListItems.Remove (lvList.SelectedItem.Index)
@@ -329,7 +348,7 @@ Private Sub btnNewCustomer_Click()
     Dim x As Variant
     x = MsgBox("This will remove your current POS transaction and will load the selected order. Are you sure you want to continue?", vbQuestion + vbYesNo)
     If x = vbYes Then
-        On Error GoTo errhandler
+        On Error GoTo ErrHandler
         'load order
         Set con = New ADODB.Connection
         Set cmd = New ADODB.Command
@@ -340,14 +359,14 @@ Private Sub btnNewCustomer_Click()
         cmd.ActiveConnection = con
         cmd.CommandType = adCmdStoredProc
         cmd.CommandText = "POS_OrderLine_Get"
-        cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Val(lvList.SelectedItem.text))
+        cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Val(lvList.SelectedItem.Text))
         Set rec = cmd.Execute
         If Not rec.EOF Then
             'clear list
             POS_CashierFrm.lvList.ListItems.Clear
             Do Until rec.EOF
                 Set item = POS_CashierFrm.lvList.ListItems.add(, , rec!Name)
-                    item.SubItems(1) = FormatNumber(rec!Quantity, 2, vbTrue, vbFalse)
+                    item.SubItems(1) = FormatNumber(rec!quantity, 2, vbTrue, vbFalse)
                     item.SubItems(2) = rec!unit
                     item.SubItems(3) = FormatNumber(rec!price, 2, vbTrue, vbFalse)
                     item.SubItems(4) = FormatNumber(rec!discount, 2, vbTrue, vbFalse)
@@ -370,18 +389,40 @@ Private Sub btnNewCustomer_Click()
         POS_CashierFrm.CountTotal
         POS_CashierFrm.CountTax
         
-        POS_CashierFrm.POSOrderId = lvList.SelectedItem.text
+        POS_CashierFrm.POSOrderId = lvList.SelectedItem.Text
         POS_CashierFrm.TableNumber = lvList.SelectedItem.SubItems(2)
-        
+        POS_CashierFrm.FoodBillNumber = lvList.SelectedItem.SubItems(1)
         Unload Me
     Else
     End If
     Exit Sub
-errhandler:
+ErrHandler:
     MsgBox "An error occured while loading order. Please try again.", vbCritical, "Error loading.."
     
 End Sub
 
+
+Private Sub btnPrint_Click()
+    DefaultPrinter (OrderPrinter)
+    
+    '**PRINT RECEIPT******
+    Dim crxApp As New CRAXDRT.Application
+    Dim crxRpt As New CRAXDRT.Report
+    'If isTrainingMode = False Then
+        Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_OrderReceipt.rpt")
+    'Else
+    '    Set crxRpt = crxApp.OpenReport(App.Path & "\Reports_Training\POS_Receipt.rpt")
+    'End If
+    
+    crxRpt.RecordSelectionFormula = "{POS_Order.POS_OrderId}= " & Val(POS_OrdersFrm.lvList.SelectedItem.Text) & ""
+    crxRpt.DiscardSavedData
+    crxRpt.EnableParameterPrompting = False
+    crxRpt.ParameterFields(1).AddCurrentValue ""
+
+    Call ResetRptDB(crxRpt)
+    crxRpt.PrintOut False
+    '**END PRINT RECEIPT**
+End Sub
 
 Private Sub btnRefresh_Click()
     Populate
@@ -404,6 +445,10 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             btnCancel_Click
         Case vbKeyDelete
             btnDelete_Click
+        Case vbKeyF2
+            btnView_Click
+        Case vbKeyF1
+            btnPrint_Click
     End Select
 End Sub
 

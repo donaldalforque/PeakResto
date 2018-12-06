@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCTL.OCX"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form POS_OrderDetailsFrm 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "Order Details"
@@ -30,6 +30,7 @@ Begin VB.Form POS_OrderDetailsFrm
       Style           =   1  'Graphical
       TabIndex        =   7
       Top             =   7920
+      Visible         =   0   'False
       Width           =   1935
    End
    Begin VB.ComboBox cmbStatus 
@@ -235,7 +236,7 @@ Private Sub Populate(ByVal data As String)
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
             cmd.CommandText = "POS_OrderLine_Get"
-            cmd.Parameters.Append cmd.CreateParameter("@POS_OrderID", adInteger, adParamInput, , POS_OrdersFrm.lvList.SelectedItem.text)
+            cmd.Parameters.Append cmd.CreateParameter("@POS_OrderID", adInteger, adParamInput, , POS_OrdersFrm.lvList.SelectedItem.Text)
             Set rec = cmd.Execute
             
             lvList.ListItems.Clear
@@ -244,7 +245,7 @@ Private Sub Populate(ByVal data As String)
                 Do Until rec.EOF
                     Set item = lvList.ListItems.add(, , rec!POS_OrderId)
                         item.SubItems(1) = rec!Name
-                        item.SubItems(2) = FormatNumber(rec!Quantity, 2, vbTrue, vbFalse)
+                        item.SubItems(2) = FormatNumber(rec!quantity, 2, vbTrue, vbFalse)
                         item.SubItems(3) = rec!unit
                     rec.MoveNext
                 Loop
@@ -270,7 +271,7 @@ Private Sub btnPrint_Click()
     '    Set crxRpt = crxApp.OpenReport(App.Path & "\Reports_Training\POS_Receipt.rpt")
     'End If
     
-    crxRpt.RecordSelectionFormula = "{POS_Order.POS_OrderId}= " & Val(POS_OrdersFrm.lvList.SelectedItem.text) & ""
+    crxRpt.RecordSelectionFormula = "{POS_Order.POS_OrderId}= " & Val(POS_OrdersFrm.lvList.SelectedItem.Text) & ""
     crxRpt.DiscardSavedData
     crxRpt.EnableParameterPrompting = False
     crxRpt.ParameterFields(1).AddCurrentValue ""
@@ -292,12 +293,12 @@ Private Sub btnUpdate_Click()
     cmd.CommandType = adCmdStoredProc
     cmd.CommandText = "POS_OrderStatus_Update"
     cmd.Parameters.Append cmd.CreateParameter("@POS_StatusId", adInteger, adParamInput, , cmbStatus.ItemData(cmbStatus.ListIndex))
-    cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , POS_OrdersFrm.lvList.SelectedItem.text)
+    cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , POS_OrdersFrm.lvList.SelectedItem.Text)
     cmd.Execute
     
     MsgBox "Order updated.", vbInformation
     
-    POS_OrdersFrm.lvList.SelectedItem.SubItems(5) = cmbStatus.text
+    POS_OrdersFrm.lvList.SelectedItem.SubItems(5) = cmbStatus.Text
     
     con.Close
 End Sub
@@ -311,5 +312,5 @@ Private Sub Form_Load()
     lvList.ColumnHeaders(4).width = lvList.width * 0.17
     
     On Error Resume Next
-    cmbStatus.text = POS_OrdersFrm.lvList.SelectedItem.SubItems(5)
+    cmbStatus.Text = POS_OrdersFrm.lvList.SelectedItem.SubItems(5)
 End Sub
