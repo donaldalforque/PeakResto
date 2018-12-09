@@ -6,14 +6,33 @@ Begin VB.Form POS_OrdersFrm
    ClientHeight    =   9255
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   12615
+   ClientWidth     =   13470
    KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   9255
-   ScaleWidth      =   12615
+   ScaleWidth      =   13470
    StartUpPosition =   2  'CenterScreen
+   Begin VB.CommandButton btnBillOut 
+      Caption         =   "F3: Bill Out"
+      BeginProperty Font 
+         Name            =   "Segoe UI"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   850
+      Left            =   7680
+      Picture         =   "POS_OrdersFrm.frx":0000
+      Style           =   1  'Graphical
+      TabIndex        =   11
+      Top             =   8280
+      Width           =   1695
+   End
    Begin VB.CommandButton btnPrint 
       Caption         =   "F1:Print"
       BeginProperty Font 
@@ -26,12 +45,12 @@ Begin VB.Form POS_OrdersFrm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   850
-      Left            =   4680
-      Picture         =   "POS_OrdersFrm.frx":0000
+      Left            =   4200
+      Picture         =   "POS_OrdersFrm.frx":6852
       Style           =   1  'Graphical
       TabIndex        =   10
       Top             =   8280
-      Width           =   1935
+      Width           =   1575
    End
    Begin VB.CommandButton btnDelete 
       Caption         =   "DEL: Delete"
@@ -46,7 +65,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   1800
-      Picture         =   "POS_OrdersFrm.frx":2228
+      Picture         =   "POS_OrdersFrm.frx":8A7A
       Style           =   1  'Graphical
       TabIndex        =   9
       Top             =   8280
@@ -69,12 +88,12 @@ Begin VB.Form POS_OrdersFrm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   850
-      Left            =   6720
-      Picture         =   "POS_OrdersFrm.frx":45B7
+      Left            =   5880
+      Picture         =   "POS_OrdersFrm.frx":AE09
       Style           =   1  'Graphical
       TabIndex        =   8
       Top             =   8280
-      Width           =   1815
+      Width           =   1695
    End
    Begin VB.CommandButton btnRefresh 
       Caption         =   "REFRESH"
@@ -89,7 +108,7 @@ Begin VB.Form POS_OrdersFrm
       EndProperty
       Height          =   850
       Left            =   120
-      Picture         =   "POS_OrdersFrm.frx":4BBA
+      Picture         =   "POS_OrdersFrm.frx":B40C
       Style           =   1  'Graphical
       TabIndex        =   4
       Top             =   8280
@@ -107,8 +126,8 @@ Begin VB.Form POS_OrdersFrm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   850
-      Left            =   10920
-      Picture         =   "POS_OrdersFrm.frx":6F8E
+      Left            =   11760
+      Picture         =   "POS_OrdersFrm.frx":D7E0
       Style           =   1  'Graphical
       TabIndex        =   5
       Top             =   8280
@@ -150,8 +169,8 @@ Begin VB.Form POS_OrdersFrm
          Strikethrough   =   0   'False
       EndProperty
       Height          =   850
-      Left            =   8640
-      Picture         =   "POS_OrdersFrm.frx":931D
+      Left            =   9480
+      Picture         =   "POS_OrdersFrm.frx":FB6F
       Style           =   1  'Graphical
       TabIndex        =   3
       Top             =   8280
@@ -162,8 +181,8 @@ Begin VB.Form POS_OrdersFrm
       Left            =   240
       TabIndex        =   2
       Top             =   1440
-      Width           =   12135
-      _ExtentX        =   21405
+      Width           =   12975
+      _ExtentX        =   22886
       _ExtentY        =   11668
       View            =   3
       LabelEdit       =   1
@@ -222,7 +241,7 @@ Begin VB.Form POS_OrdersFrm
       Height          =   7455
       Left            =   120
       Top             =   720
-      Width           =   12375
+      Width           =   13215
    End
    Begin VB.Label Label1 
       AutoSize        =   -1  'True
@@ -264,7 +283,7 @@ Begin VB.Form POS_OrdersFrm
    Begin VB.Image picModuleImage 
       Height          =   480
       Left            =   120
-      Picture         =   "POS_OrdersFrm.frx":98B8
+      Picture         =   "POS_OrdersFrm.frx":1010A
       Top             =   120
       Width           =   480
    End
@@ -275,6 +294,67 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 
+
+Private Sub btnBillOut_Click()
+    If lvList.ListItems.Count <= 0 Then Exit Sub
+    Dim x As Variant
+    x = MsgBox("Bill out order #: " & lvList.SelectedItem.SubItems(1), vbQuestion + vbYesNo)
+    If x = vbYes Then
+        On Error GoTo ErrHandler
+        'load order
+        Set con = New ADODB.Connection
+        Set cmd = New ADODB.Command
+        Set rec = New ADODB.Recordset
+        Dim item As MSComctlLib.ListItem
+        con.ConnectionString = ConnString
+        con.Open
+        cmd.ActiveConnection = con
+        cmd.CommandType = adCmdStoredProc
+        cmd.CommandText = "POS_OrderLine_Get"
+        cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Val(lvList.SelectedItem.Text))
+        Set rec = cmd.Execute
+        If Not rec.EOF Then
+            'clear list
+            POS_CashierFrm.lvList.ListItems.Clear
+            Do Until rec.EOF
+                Set item = POS_CashierFrm.lvList.ListItems.add(, , rec!Name)
+                    item.SubItems(1) = FormatNumber(rec!quantity, 2, vbTrue, vbFalse)
+                    item.SubItems(2) = rec!unit
+                    item.SubItems(3) = FormatNumber(rec!price, 2, vbTrue, vbFalse)
+                    item.SubItems(4) = FormatNumber(rec!discount, 2, vbTrue, vbFalse)
+                    item.SubItems(5) = rec!price
+                    item.SubItems(6) = rec!unitcost
+                    item.SubItems(7) = 0
+                    item.SubItems(8) = rec!ProductId
+                    item.SubItems(9) = rec!price
+                    item.SubItems(10) = 0
+                    item.SubItems(11) = 0
+                    item.SubItems(12) = 0
+                    item.SubItems(13) = rec!Percentage
+                    item.SubItems(14) = rec!tax
+                    item.SubItems(15) = rec!DiscountType
+                    item.SubItems(16) = rec!ActualQuantity
+                rec.MoveNext
+            Loop
+        End If
+        con.Close
+        
+        POS_CashierFrm.CountTotal
+        POS_CashierFrm.CountTax
+        
+        POS_CashierFrm.POSOrderId = lvList.SelectedItem.Text
+        POS_CashierFrm.TableNumber = lvList.SelectedItem.SubItems(2)
+        POS_CashierFrm.FoodBillNumber = lvList.SelectedItem.SubItems(1)
+
+        POS_PayFrm.lblAmountDue.Caption = POS_CashierFrm.txtTotal.Caption
+        POS_PayFrm.Show
+        Unload Me
+    Else
+    End If
+    Exit Sub
+ErrHandler:
+    MsgBox "An error occured while loading order. Please try again.", vbCritical, "Error loading.."
+End Sub
 
 Private Sub btnCancel_Click()
     Unload Me
@@ -380,6 +460,7 @@ Private Sub btnNewCustomer_Click()
                     item.SubItems(12) = 0
                     item.SubItems(13) = rec!Percentage
                     item.SubItems(14) = rec!tax
+                    item.SubItems(15) = rec!DiscountType
                     item.SubItems(16) = rec!ActualQuantity
                 rec.MoveNext
             Loop
@@ -447,6 +528,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             btnDelete_Click
         Case vbKeyF2
             btnView_Click
+        Case vbKeyF3
+            btnBillOut_Click
         Case vbKeyF1
             btnPrint_Click
     End Select

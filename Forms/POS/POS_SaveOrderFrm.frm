@@ -127,7 +127,7 @@ Attribute VB_Exposed = False
 Private Sub btnAccept_Click()
 '    On Error GoTo ErrHandler
     
-    POS_CashierFrm.TableNumber = txtTableNumber.text
+    POS_CashierFrm.TableNumber = txtTableNumber.Text
     
     Set con = New ADODB.Connection
     Set rec = New ADODB.Recordset
@@ -146,7 +146,7 @@ Private Sub btnAccept_Click()
     cmd.CommandType = adCmdStoredProc
     
     cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInputOutput, , Val(POS_CashierFrm.POSOrderId))
-    cmd.Parameters.Append cmd.CreateParameter("@TableNumber", adVarChar, adParamInput, 50, txtTableNumber.text)
+    cmd.Parameters.Append cmd.CreateParameter("@TableNumber", adVarChar, adParamInput, 50, txtTableNumber.Text)
     cmd.Parameters.Append cmd.CreateParameter("@Total", adDecimal, adParamInput, , due)
                           cmd.Parameters("@Total").NumericScale = 2
                           cmd.Parameters("@Total").Precision = 18
@@ -190,7 +190,7 @@ Private Sub btnAccept_Click()
         cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Val(POS_CashierFrm.POSOrderId))
         cmd.Parameters.Append cmd.CreateParameter("@ProductId", adInteger, adParamInput, , item.SubItems(8))
         cmd.Parameters.Append cmd.CreateParameter("@Unit", adVarChar, adParamInput, 50, item.SubItems(2))
-        cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.text)
+        cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, item.Text)
         cmd.Parameters.Append cmd.CreateParameter("@Price", adDecimal, adParamInput, , Val(Replace(item.SubItems(3), ",", "")))
                               cmd.Parameters("@Price").NumericScale = 2
                               cmd.Parameters("@Price").Precision = 18
@@ -216,6 +216,7 @@ Private Sub btnAccept_Click()
                               cmd.Parameters("@ActualQuantity").NumericScale = 2
                               cmd.Parameters("@ActualQuantity").Precision = 18
         cmd.Parameters.Append cmd.CreateParameter("@LocationId", adInteger, adParamInput, , POS_CashierFrm.POSLocationId)
+        cmd.Parameters.Append cmd.CreateParameter("@DiscountType", adVarChar, adParamInput, 50, item.SubItems(15))
         cmd.Execute
     Next
     con.Close
@@ -252,8 +253,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub Form_Load()
-    txtTableNumber.text = POS_CashierFrm.TableNumber
-    txtTableNumber.SelStart = Len(txtTableNumber.text)
+    txtTableNumber.Text = POS_CashierFrm.TableNumber
+    txtTableNumber.SelStart = Len(txtTableNumber.Text)
     txtTableNumber.SelLength = 0
     On Error Resume Next
     Shell "keyboard.bat"
