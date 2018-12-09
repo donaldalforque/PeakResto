@@ -507,7 +507,7 @@ End Sub
 Private Sub btnAccept_Click()
     POS_ConfirmPaymentFrm.Show (1)
     If AllowAccess = False Then Exit Sub
-  'On Error GoTo ErrMessage
+  On Error GoTo ErrMessage
     'SAVE CASH DETAILS
     Dim due, cash, Card, Check, Loyalty, OtherPayment, SumPayment, SalesTax, TaxExempt, TotalDiscount As Double
     Dim item As MSComctlLib.ListItem
@@ -533,7 +533,12 @@ Private Sub btnAccept_Click()
             SalesTax = SalesTax + item.SubItems(14)
         End If
         
-        TotalDiscount = TotalDiscount + Val(Replace(item.SubItems(17), ",", ""))
+        If item.SubItems(15) = "Senior" Then
+            TotalDiscount = TotalDiscount + NVAL(item.SubItems(4))
+            POS_CashierFrm.DiscountType = "Senior"
+        Else
+            TotalDiscount = TotalDiscount + Val(Replace(item.SubItems(17), ",", ""))
+        End If
     Next
     
     If SumPayment < due Then
