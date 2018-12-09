@@ -610,7 +610,7 @@ Begin VB.Form POS_CashierFrm
       End
       Begin VB.CommandButton btnTender 
          BackColor       =   &H00FFFF80&
-         Caption         =   "F12: Tender"
+         Caption         =   "F12: Pay"
          BeginProperty Font 
             Name            =   "Calibri"
             Size            =   9.75
