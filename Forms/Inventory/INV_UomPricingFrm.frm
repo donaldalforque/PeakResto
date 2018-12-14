@@ -27,7 +27,7 @@ Begin VB.Form INV_UomPricingFrm
       Height          =   345
       Left            =   240
       Style           =   2  'Dropdown List
-      TabIndex        =   6
+      TabIndex        =   5
       Top             =   5400
       Width           =   3495
    End
@@ -122,41 +122,6 @@ Begin VB.Form INV_UomPricingFrm
          Object.Width           =   2540
       EndProperty
    End
-   Begin MSComctlLib.Toolbar tb_Standard 
-      Height          =   330
-      Left            =   0
-      TabIndex        =   3
-      Top             =   0
-      Width           =   11775
-      _ExtentX        =   20770
-      _ExtentY        =   582
-      ButtonWidth     =   1349
-      ButtonHeight    =   582
-      Style           =   1
-      TextAlignment   =   1
-      ImageList       =   "ImageList1"
-      _Version        =   393216
-      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
-         NumButtons      =   4
-         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Caption         =   "New"
-            ImageIndex      =   1
-         EndProperty
-         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Caption         =   "Save"
-            ImageIndex      =   2
-         EndProperty
-         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.Visible         =   0   'False
-            Style           =   3
-         EndProperty
-         BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
-            Object.Visible         =   0   'False
-            Caption         =   "Accounts"
-            ImageIndex      =   4
-         EndProperty
-      EndProperty
-   End
    Begin MSComctlLib.ImageList ImageList1 
       Left            =   4680
       Top             =   0
@@ -187,6 +152,39 @@ Begin VB.Form INV_UomPricingFrm
          EndProperty
       EndProperty
    End
+   Begin MSComctlLib.Toolbar tb_Standard 
+      Height          =   330
+      Left            =   0
+      TabIndex        =   6
+      Top             =   0
+      Width           =   11775
+      _ExtentX        =   20770
+      _ExtentY        =   582
+      ButtonWidth     =   1588
+      ButtonHeight    =   582
+      Style           =   1
+      TextAlignment   =   1
+      ImageList       =   "ImageList1"
+      _Version        =   393216
+      BeginProperty Buttons {66833FE8-8583-11D1-B16A-00C0F0283628} 
+         NumButtons      =   4
+         BeginProperty Button1 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Caption         =   "New"
+            ImageIndex      =   1
+         EndProperty
+         BeginProperty Button2 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Caption         =   "Save"
+            ImageIndex      =   2
+         EndProperty
+         BeginProperty Button3 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Style           =   3
+         EndProperty
+         BeginProperty Button4 {66833FEA-8583-11D1-B16A-00C0F0283628} 
+            Caption         =   "Delete"
+            ImageIndex      =   3
+         EndProperty
+      EndProperty
+   End
    Begin VB.Image Image1 
       Height          =   480
       Left            =   240
@@ -209,7 +207,7 @@ Begin VB.Form INV_UomPricingFrm
       ForeColor       =   &H00808080&
       Height          =   450
       Left            =   240
-      TabIndex        =   5
+      TabIndex        =   4
       Top             =   1250
       Width           =   4815
    End
@@ -229,7 +227,7 @@ Begin VB.Form INV_UomPricingFrm
       ForeColor       =   &H00404040&
       Height          =   345
       Left            =   840
-      TabIndex        =   4
+      TabIndex        =   3
       Top             =   720
       Width           =   1665
    End
@@ -349,13 +347,13 @@ End Sub
 Private Sub lvConversion_ItemClick(ByVal item As MSComctlLib.ListItem)
     ConversionId = item.SubItems(1)
     On Error Resume Next
-    cmbUom.text = item.SubItems(2)
-    txtToQTY.text = item.SubItems(3)
+    cmbUom.Text = item.SubItems(2)
+    txtToQTY.Text = item.SubItems(3)
     cmbUom.SetFocus
 End Sub
 
 Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
-'On Error GoTo ErrorHandler:
+On Error GoTo ErrorHandler:
     Select Case Button.Index
         Case 1 'NEW
             Initialize
@@ -382,7 +380,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
 '                cmd.Execute
 '            Next
             
-            If Trim(cmbUom.text) = "" Then
+            If Trim(cmbUom.Text) = "" Then
                 Exit Sub
             End If
         
@@ -395,7 +393,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
             cmd.Parameters.Append cmd.CreateParameter("@ToQty", adDecimal, adParamInput, , Null)
                                   cmd.Parameters("@ToQty").NumericScale = 2
                                   cmd.Parameters("@ToQty").Precision = 18
-            cmd.Parameters.Append cmd.CreateParameter("@Price", adDecimal, adParamInput, , Val(Replace(txtToQTY.text, ",", "")))
+            cmd.Parameters.Append cmd.CreateParameter("@Price", adDecimal, adParamInput, , Val(Replace(txtToQTY.Text, ",", "")))
                                   cmd.Parameters("@Price").NumericScale = 2
                                   cmd.Parameters("@Price").Precision = 18
             
@@ -418,28 +416,50 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
                 cmd.Execute
                 For Each item In lvConversion.ListItems
                     If item.SubItems(1) = ConversionId Then
-                        item.SubItems(2) = cmbUom.text
-                        item.SubItems(3) = FormatNumber(Val(txtToQTY.text), 2, vbTrue, vbFalse)
+                        item.SubItems(2) = cmbUom.Text
+                        item.SubItems(3) = FormatNumber(Val(txtToQTY.Text), 2, vbTrue, vbFalse)
                         item.Selected = True
                         item.EnsureVisible
                     End If
                 Next
             End If
             con.Close
+        Case 4 'Delete
+            Dim x As Variant
+            x = MsgBox("Are you sure you want to delete this record?", vbQuestion + vbYesNo)
+            If x = vbYes Then
+                If lvConversion.ListItems.Count > 0 Then
+                    'Dim item As MSComctlLib.ListItem
+                    Set con = New ADODB.Connection
+                    Set cmd = New ADODB.Command
+                    
+                    con.ConnectionString = ConnString
+                    con.Open
+                    cmd.ActiveConnection = con
+                    cmd.CommandType = adCmdStoredProc
+                    cmd.CommandText = "INV_UomConversion_Delete"
+                    cmd.Parameters.Append cmd.CreateParameter("@UomConversionId", adInteger, adParamInput, , lvConversion.SelectedItem.SubItems(1))
+                    cmd.Execute
+                    con.Close
+                    
+                    lvConversion.ListItems.Remove (lvConversion.SelectedItem.Index)
+                    Initialize
+                End If
+            End If
     End Select
     Exit Sub
-'ErrorHandler:
-'    If IsNumeric(Err.Description) = True Then
-'        GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(Val(Err.Description))
-'    Else
-'        GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & Err.Description
-'    End If
-'    GLOBAL_MessageFrm.Show (1)
+ErrorHandler:
+    If IsNumeric(Err.Description) = True Then
+        GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(Val(Err.Description))
+    Else
+        GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & Err.Description
+    End If
+    GLOBAL_MessageFrm.Show (1)
 End Sub
 
 Private Sub txtToQty_Change()
-    If IsNumeric(txtToQTY.text) = False Then
-        txtToQTY.text = 0
+    If IsNumeric(txtToQTY.Text) = False Then
+        txtToQTY.Text = 0
     End If
 End Sub
 

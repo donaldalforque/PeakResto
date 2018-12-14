@@ -1123,7 +1123,7 @@ Public Sub btnSearch_Click()
     cmd.ActiveConnection = con
     cmd.CommandType = adCmdStoredProc
     cmd.CommandText = "BASE_Vendor_Search"
-    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtSearch_name.Text)
+    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtSearch_Name.Text)
     If Trim(txtSearch_Code.Text) <> "" Then
         cmd.Parameters.Append cmd.CreateParameter("@VendorCode", adVarChar, adParamInput, 50, txtSearch_Code.Text)
     Else
@@ -1295,7 +1295,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
         Case 2 'Save
             If isActive = False Then Exit Sub
             If isValidated = True Then
-                On Error GoTo ErrHandler
+                'On Error GoTo ErrHandler
                 Set con = New ADODB.Connection
                 Set cmd = New ADODB.Command
                 
@@ -1309,9 +1309,9 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
                 cmd.Parameters.Append cmd.CreateParameter("@VendorId", adInteger, adParamInputOutput, , VendorId)
                 cmd.Parameters.Append cmd.CreateParameter("@VendorCode", adVarChar, adParamInput, 50, txtCode.Text)
                 cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtName.Text)
-                cmd.Parameters.Append cmd.CreateParameter("@TIN", adVarChar, adParamInput, 500, txtTIN.Text)
-                cmd.Parameters.Append cmd.CreateParameter("@Phone", adVarChar, adParamInput, 50, txtPhone.Text)
+                'cmd.Parameters.Append cmd.CreateParameter("@TIN", adVarChar, adParamInput, 500, txtTIN.Text)
                 cmd.Parameters.Append cmd.CreateParameter("@Mobile", adVarChar, adParamInput, 50, txtMobile.Text)
+                cmd.Parameters.Append cmd.CreateParameter("@Phone", adVarChar, adParamInput, 50, txtPhone.Text)
                 cmd.Parameters.Append cmd.CreateParameter("@Address", adVarChar, adParamInput, 500, txtAddress.Text)
                                 
                 If VendorId = 0 Then
@@ -1319,13 +1319,13 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
                     cmd.Execute
                     VendorId = cmd.Parameters("@VendorId")
                     
-                    SavePOSAuditTrail UserId, WorkstationId, "", "Created new supplier: " & txtName.Text, "PURCHASING"
+                    'SavePOSAuditTrail UserId, WorkstationId, "", "Created new supplier: " & txtName.Text, "PURCHASING"
                 Else
                     'cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , 1) 'NOT SET
                     cmd.CommandText = "BASE_Vendor_Update"
                     cmd.Execute
                     
-                    SavePOSAuditTrail UserId, WorkstationId, "", "Updated supplier: " & txtName.Text, "PURCHASING"
+                    'SavePOSAuditTrail UserId, WorkstationId, "", "Updated supplier: " & txtName.Text, "PURCHASING"
                 End If
                 
                 con.CommitTrans
@@ -1386,7 +1386,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
                     isActivated (True)
                 End If
                 
-                SavePOSAuditTrail UserId, WorkstationId, "", "Deactivated supplier: " & txtName.Text, "PURCHASING"
+                'SavePOSAuditTrail UserId, WorkstationId, "", "Deactivated supplier: " & txtName.Text, "PURCHASING"
             End If
     End Select
     Exit Sub

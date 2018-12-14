@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Begin VB.Form INV_UomConversionFrm 
    BorderStyle     =   3  'Fixed Dialog
    ClientHeight    =   6045
@@ -252,7 +252,7 @@ Public Sub Initialize()
     'cmbUom.text = ""
     ConversionId = 0
     cmbUom.SetFocus
-    txtToQTY.text = "0.00"
+    txtToQTY.Text = "0.00"
 End Sub
 Public Sub Populate(ByVal data As String)
     Dim item As MSComctlLib.ListItem
@@ -275,10 +275,10 @@ Public Sub Populate(ByVal data As String)
                      Set item = lvConversion.ListItems.add(, , "")
                             item.SubItems(1) = rec!UomConversionId
                             item.SubItems(2) = rec!Uom
-                            If IsNull(rec!ToQty) Then
+                            If IsNull(rec!toqty) Then
                                 item.SubItems(3) = "0.00"
                             Else
-                                item.SubItems(3) = FormatNumber(rec!ToQty, 2, vbTrue, vbFalse)
+                                item.SubItems(3) = FormatNumber(rec!toqty, 2, vbTrue, vbFalse)
                             End If
                     rec.MoveNext
                 Loop
@@ -350,8 +350,8 @@ End Sub
 Private Sub lvConversion_ItemClick(ByVal item As MSComctlLib.ListItem)
     ConversionId = item.SubItems(1)
     On Error Resume Next
-    cmbUom.text = item.SubItems(2)
-    txtToQTY.text = item.SubItems(3)
+    cmbUom.Text = item.SubItems(2)
+    txtToQTY.Text = item.SubItems(3)
     cmbUom.SetFocus
 End Sub
 
@@ -383,7 +383,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
 '                cmd.Execute
 '            Next
             
-            If Trim(cmbUom.text) = "" Then
+            If Trim(cmbUom.Text) = "" Then
                 Exit Sub
             End If
         
@@ -393,7 +393,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
             cmd.Parameters.Append cmd.CreateParameter("@UomConversionId", adInteger, adParamInputOutput, , ConversionId)
             cmd.Parameters.Append cmd.CreateParameter("@ProductId", adInteger, adParamInput, , INV_NewProductFrm.ProductId)
             cmd.Parameters.Append cmd.CreateParameter("@UomId", adInteger, adParamInput, , cmbUom.ItemData(cmbUom.ListIndex))
-            cmd.Parameters.Append cmd.CreateParameter("@ToQty", adDecimal, adParamInput, , Val(Replace(txtToQTY.text, ",", "")))
+            cmd.Parameters.Append cmd.CreateParameter("@ToQty", adDecimal, adParamInput, , Val(Replace(txtToQTY.Text, ",", "")))
                                   cmd.Parameters("@ToQty").NumericScale = 2
                                   cmd.Parameters("@ToQty").Precision = 18
             
@@ -417,14 +417,36 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
                 cmd.Execute
                 For Each item In lvConversion.ListItems
                     If item.SubItems(1) = ConversionId Then
-                        item.SubItems(2) = cmbUom.text
-                        item.SubItems(3) = FormatNumber(Val(txtToQTY.text), 2, vbTrue, vbFalse)
+                        item.SubItems(2) = cmbUom.Text
+                        item.SubItems(3) = FormatNumber(Val(txtToQTY.Text), 2, vbTrue, vbFalse)
                         item.Selected = True
                         item.EnsureVisible
                     End If
                 Next
             End If
             con.Close
+        Case 4 'Delete
+            Dim x As Variant
+            x = MsgBox("Are you sure you want to delete this record?", vbQuestion + vbYesNo)
+            If x = vbYes Then
+                If lvConversion.ListItems.Count > 0 Then
+                    'Dim item As MSComctlLib.ListItem
+                    Set con = New ADODB.Connection
+                    Set cmd = New ADODB.Command
+                    
+                    con.ConnectionString = ConnString
+                    con.Open
+                    cmd.ActiveConnection = con
+                    cmd.CommandType = adCmdStoredProc
+                    cmd.CommandText = "INV_UomConversion_Delete"
+                    cmd.Parameters.Append cmd.CreateParameter("@UomConversionId", adInteger, adParamInput, , lvConversion.SelectedItem.SubItems(1))
+                    cmd.Execute
+                    con.Close
+                    
+                    lvConversion.ListItems.Remove (lvConversion.SelectedItem.Index)
+                    Initialize
+                End If
+            End If
     End Select
     Exit Sub
 'ErrorHandler:
@@ -437,8 +459,8 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
 End Sub
 
 Private Sub txtToQty_Change()
-    If IsNumeric(txtToQTY.text) = False Then
-        txtToQTY.text = 0
+    If IsNumeric(txtToQTY.Text) = False Then
+        txtToQTY.Text = 0
    
     End If
 End Sub
