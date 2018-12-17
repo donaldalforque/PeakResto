@@ -1,5 +1,5 @@
 VERSION 5.00
-Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomct2.ocx"
+Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form POS_MoreReportsFrm 
    BorderStyle     =   1  'Fixed Single
    Caption         =   "POS Reports"
@@ -7,6 +7,7 @@ Begin VB.Form POS_MoreReportsFrm
    ClientLeft      =   45
    ClientTop       =   390
    ClientWidth     =   4440
+   KeyPreview      =   -1  'True
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
@@ -122,7 +123,7 @@ Begin VB.Form POS_MoreReportsFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   93257729
+      Format          =   144703489
       CurrentDate     =   41686
    End
    Begin MSComCtl2.DTPicker DateFrom 
@@ -143,7 +144,7 @@ Begin VB.Form POS_MoreReportsFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   93257729
+      Format          =   144703489
       CurrentDate     =   41686
    End
    Begin VB.Label Label4 
@@ -323,10 +324,19 @@ Private Sub btnPrint_Click()
     End If
     crxRpt.ParameterFields.GetItemByName("@CustomerId").AddCurrentValue 0
     crxRpt.ParameterFields.GetItemByName("@WorkStationId").AddCurrentValue WorkstationId
-    crxRpt.ParameterFields.GetItemByName("Notice").AddCurrentValue cmbCashier.text
+    crxRpt.ParameterFields.GetItemByName("Notice").AddCurrentValue cmbCashier.Text
     
     crxRpt.PrintOut False
     Screen.MousePointer = vbArrow
+End Sub
+
+Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
+    Select Case KeyCode
+        Case vbKeyF1
+            btnPrint_Click
+        Case vbKeyEscape
+            btnCancel_Click
+    End Select
 End Sub
 
 Private Sub Form_Load()

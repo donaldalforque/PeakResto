@@ -299,10 +299,10 @@ Private Sub Form_Load()
     Set rec = cmd.Execute
     If Not rec.EOF Then
         Do Until rec.EOF
-            txtPrintCount.text = rec!printcount
-            txtPrintLabel1.text = rec!PrintLabel1
-            txtPrintLabel2.text = rec!PrintLabel2
-            txtPrintLabel3.text = rec!PrintLabel3
+            txtPrintCount.Text = rec!printcount
+            txtPrintLabel1.Text = rec!PrintLabel1
+            txtPrintLabel2.Text = rec!PrintLabel2
+            txtPrintLabel3.Text = rec!PrintLabel3
             rec.MoveNext
         Loop
     End If
@@ -313,7 +313,7 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
     On Error GoTo ErrorHandler:
     Select Case Button.Index
         Case 2 'Save
-            If NVAL(txtPrintCount.text) > 3 Then
+            If NVAL(txtPrintCount.Text) > 3 Then
                 MsgBox "Cannot create more than 3 print counts.", vbCritical
                 Exit Sub
             End If
@@ -328,10 +328,10 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
             cmd.CommandText = "POS_PrintingOptions_Update"
-            cmd.Parameters.Append cmd.CreateParameter("@PrintCount", adInteger, adParamInput, , NVAL(txtPrintCount.text))
-            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel1", adVarChar, adParamInput, 250, txtPrintLabel1.text)
-            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel2", adVarChar, adParamInput, 250, txtPrintLabel2.text)
-            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel3", adVarChar, adParamInput, 250, txtPrintLabel3.text)
+            cmd.Parameters.Append cmd.CreateParameter("@PrintCount", adInteger, adParamInput, , NVAL(txtPrintCount.Text))
+            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel1", adVarChar, adParamInput, 250, txtPrintLabel1.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel2", adVarChar, adParamInput, 250, txtPrintLabel2.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@PrintLabel3", adVarChar, adParamInput, 250, txtPrintLabel3.Text)
             cmd.Execute
             con.Close
             

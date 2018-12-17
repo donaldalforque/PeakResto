@@ -68,7 +68,7 @@ Begin VB.Form POS_ZreadingFrm
       Left            =   240
       Picture         =   "POS_ZreadingFrm.frx":0037
       Style           =   1  'Graphical
-      TabIndex        =   5
+      TabIndex        =   1
       Top             =   6600
       Width           =   3975
    End
@@ -87,7 +87,7 @@ Begin VB.Form POS_ZreadingFrm
       Left            =   240
       Picture         =   "POS_ZreadingFrm.frx":0685
       Style           =   1  'Graphical
-      TabIndex        =   1
+      TabIndex        =   2
       Top             =   7560
       Width           =   3975
    End
@@ -113,7 +113,7 @@ Begin VB.Form POS_ZreadingFrm
    Begin MSComCtl2.DTPicker dtDate 
       Height          =   450
       Left            =   240
-      TabIndex        =   2
+      TabIndex        =   3
       Top             =   1320
       Width           =   3975
       _ExtentX        =   7011
@@ -128,7 +128,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   97517569
+      Format          =   145031169
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker startTime 
@@ -150,7 +150,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   97517570
+      Format          =   145031170
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker EndTime 
@@ -172,7 +172,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   97517570
+      Format          =   145031170
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker dtToDate 
@@ -194,7 +194,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   97517569
+      Format          =   145031169
       CurrentDate     =   42297
    End
    Begin VB.Label lblStart 
@@ -272,7 +272,7 @@ Begin VB.Form POS_ZreadingFrm
       EndProperty
       Height          =   285
       Left            =   240
-      TabIndex        =   4
+      TabIndex        =   5
       Top             =   960
       Width           =   525
    End
@@ -291,7 +291,7 @@ Begin VB.Form POS_ZreadingFrm
       EndProperty
       Height          =   345
       Left            =   840
-      TabIndex        =   3
+      TabIndex        =   4
       Top             =   360
       Width           =   1950
    End
@@ -380,7 +380,7 @@ Private Sub btnPrint_Click()
     
     crxRpt.ParameterFields.GetItemByName("@UserId").AddCurrentValue UserId
     crxRpt.ParameterFields.GetItemByName("@WorkstationId").AddCurrentValue WorkstationId
-    crxRpt.ParameterFields.GetItemByName("@Value").AddCurrentValue NVAL(txtOption.text)
+    crxRpt.ParameterFields.GetItemByName("@Value").AddCurrentValue NVAL(txtOption.Text)
     crxRpt.ParameterFields.GetItemByName("@Mode").AddCurrentValue cmbOption.ListIndex
     
     crxRpt.PrintOut False
@@ -394,6 +394,8 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
     Select Case KeyCode
         Case vbKeyF1
             btnPrint_Click
+        Case vbKeyF2
+            btnMore_Click
         Case vbKeyEscape
             btnCancel_Click
         Case vbKeyD
@@ -422,7 +424,7 @@ Private Sub Form_Load()
     EndTime.value = zEndTime
     
     dtDate.Enabled = False
-    cmbOption.text = "Time"
+    cmbOption.Text = "Time"
 End Sub
 
 Private Sub ShowHidden(ByVal value As Boolean)
