@@ -254,18 +254,18 @@ End Sub
 Private Sub btnAccept_Click()
     If lvList.ListItems.Count > 0 Then
         POS_CashierFrm.lblCustomer.Caption = "| CUSTOMER: " & lvList.SelectedItem.SubItems(2)
-        POS_CashierFrm.POSCustomerId = lvList.SelectedItem.text
+        POS_CashierFrm.POSCustomerId = NVAL(lvList.SelectedItem.Text)
         Unload Me
     Else
-        Dim X As Variant
-        X = MsgBox(txtCustomer.text & " is not registered. Would you like to register this customer?", vbQuestion + vbYesNo, "Customer not found.")
-        If X = vbYes Then
-            POS_AddCustomerFrm.txtname.text = txtCustomer.text
-            POS_AddCustomerFrm.txtname.SelStart = Len(POS_AddCustomerFrm.txtname.text)
+        Dim x As Variant
+        x = MsgBox(txtCustomer.Text & " is not registered. Would you like to register this customer?", vbQuestion + vbYesNo, "Customer not found.")
+        If x = vbYes Then
+            POS_AddCustomerFrm.txtName.Text = txtCustomer.Text
+            POS_AddCustomerFrm.txtName.SelStart = Len(POS_AddCustomerFrm.txtName.Text)
             POS_AddCustomerFrm.Show (1)
         Else
             txtCustomer.SelStart = 0
-            txtCustomer.SelLength = Len(txtCustomer.text)
+            txtCustomer.SelLength = Len(txtCustomer.Text)
         End If
     End If
 End Sub
@@ -283,14 +283,14 @@ Private Sub btnChargeToAccount_Click()
 End Sub
 
 Private Sub btnNewCustomer_Click()
-    POS_AddCustomerFrm.txtname.text = txtCustomer.text
-    POS_AddCustomerFrm.txtname.SelStart = Len(POS_AddCustomerFrm.txtname.text)
+    POS_AddCustomerFrm.txtName.Text = txtCustomer.Text
+    POS_AddCustomerFrm.txtName.SelStart = Len(POS_AddCustomerFrm.txtName.Text)
     POS_AddCustomerFrm.Show (1)
 End Sub
 
 Private Sub btnReturn_Click()
     txtCustomer.SelStart = 0
-    txtCustomer.SelLength = Len(txtCustomer.text)
+    txtCustomer.SelLength = Len(txtCustomer.Text)
     txtCustomer.SetFocus
 End Sub
 
@@ -332,7 +332,7 @@ Public Sub txtCustomer_Change()
     cmd.ActiveConnection = con
     cmd.CommandType = adCmdStoredProc
     cmd.CommandText = "BASE_Customer_Search"
-    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtCustomer.text)
+    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtCustomer.Text)
     cmd.Parameters.Append cmd.CreateParameter("@CustomerCode", adVarChar, adParamInput, 50, Null)
     cmd.Parameters.Append cmd.CreateParameter("@isActive", adInteger, adParamInput, , Null)
 

@@ -204,7 +204,7 @@ Begin VB.Form POS_OrdersFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   6
+      NumItems        =   7
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "POSOrderId"
          Object.Width           =   0
@@ -234,6 +234,11 @@ Begin VB.Form POS_OrdersFrm
          SubItemIndex    =   5
          Text            =   "Status"
          Object.Width           =   2540
+      EndProperty
+      BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   6
+         Text            =   "CustomerId"
+         Object.Width           =   0
       EndProperty
    End
    Begin VB.Shape Shape1 
@@ -381,6 +386,7 @@ Private Sub Populate()
                 item.SubItems(1) = rec!pos_ordernumber
                 item.SubItems(2) = rec!TableNumber
                 item.SubItems(3) = FormatNumber(rec!Total, 2, vbTrue, vbFalse)
+                item.SubItems(6) = NVAL(rec!CustomerId)
                 If IsNull(rec!Name) Then
                     item.SubItems(4) = ""
                 Else
@@ -442,6 +448,8 @@ Private Sub btnNewCustomer_Click()
         cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Val(lvList.SelectedItem.Text))
         Set rec = cmd.Execute
         If Not rec.EOF Then
+            POS_CashierFrm.lblCustomer.Caption = "| CUSTOMER: " & lvList.SelectedItem.SubItems(4)
+            POS_CashierFrm.POSCustomerId = lvList.SelectedItem.SubItems(6)
             'clear list
             POS_CashierFrm.lvList.ListItems.Clear
             Do Until rec.EOF

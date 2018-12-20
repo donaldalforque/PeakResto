@@ -128,7 +128,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   145031169
+      Format          =   142802945
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker startTime 
@@ -150,7 +150,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   145031170
+      Format          =   142802946
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker EndTime 
@@ -172,7 +172,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   145031170
+      Format          =   142802946
       CurrentDate     =   42297
    End
    Begin MSComCtl2.DTPicker dtToDate 
@@ -194,7 +194,7 @@ Begin VB.Form POS_ZreadingFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      Format          =   145031169
+      Format          =   142802945
       CurrentDate     =   42297
    End
    Begin VB.Label lblStart 
@@ -398,14 +398,14 @@ Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
             btnMore_Click
         Case vbKeyEscape
             btnCancel_Click
-        Case vbKeyD
-            If Shift = vbAltMask Then
-                If lblStart.Visible = False Then
-                    ShowHidden (True)
-                Else
-                    ShowHidden (False)
-                End If
-            End If
+'        Case vbKeyD
+'            If Shift = vbAltMask Then
+'                If lblStart.Visible = False Then
+'                    ShowHidden (True)
+'                Else
+'                    ShowHidden (False)
+'                End If
+'            End If
     End Select
 End Sub
 

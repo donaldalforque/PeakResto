@@ -968,7 +968,7 @@ Attribute VB_Exposed = False
 Public isAllowNegativeInv As Boolean
 Public POSLocationId As Integer
 Public TotalDiscount As Double
-Public POSCustomerId As Integer
+Public POSCustomerId As Long
 Public POSOrderId As String
 Public TableNumber As String
 Public FoodBillNumber As String
