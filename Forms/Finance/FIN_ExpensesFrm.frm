@@ -200,7 +200,7 @@ Begin VB.Form FIN_ExpensesFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   97320961
+         Format          =   145686529
          CurrentDate     =   41509
       End
       Begin MSComCtl2.DTPicker dtCheckDate 
@@ -222,7 +222,7 @@ Begin VB.Form FIN_ExpensesFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   97320961
+         Format          =   145686529
          CurrentDate     =   41509
       End
       Begin VB.Label Label25 
@@ -585,8 +585,6 @@ Private Sub Save()
         cmd.Parameters.Append cmd.CreateParameter("@AccountId", adInteger, adParamInput, , Null)
     End If
     cmd.Parameters.Append cmd.CreateParameter("@Remarks", adVarChar, adParamInput, 255, txtRemarks.Text)
-    cmd.Parameters.Append cmd.CreateParameter("@WorkStationId", adInteger, adParamInput, , WorkstationId)
-    cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , UserId)
     cmd.Execute
     
     Dim ExpenseId As Integer
@@ -664,9 +662,9 @@ Private Sub Save()
     con.CommitTrans
     con.Close
     
-    Dim Amount As Double
-    Amount = FormatNumber(NVAL(txtAmount.Text) + NVAL(txtCheckAmount.Text), 2, vbTrue, vbFalse)
-    SavePOSAuditTrail UserId, WorkstationId, "", "Created new expense: " & cmbExpense.Text & " Amount:" & Amount, "FINANCE"
+    Dim amount As Double
+    amount = FormatNumber(NVAL(txtAmount.Text) + NVAL(txtCheckAmount.Text), 2, vbTrue, vbFalse)
+'    SavePOSAuditTrail UserId, WorkstationId, "", "Created new expense: " & cmbExpense.Text & " Amount:" & amount, "FINANCE"
     
     MsgBox "Record saved.", vbInformation, "Success!"
     Initialize

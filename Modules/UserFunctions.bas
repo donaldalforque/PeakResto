@@ -18,8 +18,7 @@ Public Declare Function sndPlaySound Lib "winmm.dll" Alias "sndPlaySoundA" (ByVa
 Public isModify As Boolean
 Public PrintOptionCount As Integer
 Public PrintLabel1, PrintLabel2, PrintLabel3 As String
-Public isFastfood As String
-Public PrintDiscount As String
+Public isFastfood, PrintDiscount, DiningOption As String
 Public AllowNegativeInventory As Boolean
 
 Public Function Hostname() As String
@@ -489,6 +488,8 @@ Public Function GetPOSPrinter() As String
     Input #1, isFastfood '[value]
     Input #1, PrintDiscount '[PrintDiscount]
     Input #1, PrintDiscount '[value]
+    Input #1, DiningOption '[DiningOption]
+    Input #1, DiningOption '[value]
     Close #1
 End Function
 Public Function ViewAccessRights(ByVal ModuleId As Integer) As Boolean
@@ -700,7 +701,7 @@ Public Sub GetPOSPrintSettings()
     con.Close
 End Sub
 
-Public Sub ClearOrders()
+Public Sub ClearOrders(Optional ByVal StatusId As Long = 2)
     Dim con As New ADODB.Connection
     Set cmd = New ADODB.Command
     Set rec = New ADODB.Recordset
@@ -708,8 +709,10 @@ Public Sub ClearOrders()
     con.Open
     cmd.ActiveConnection = con
     cmd.CommandType = adCmdStoredProc
-    cmd.CommandText = "POS_Order_Delete"
+    'cmd.CommandText = "POS_Order_Delete"
+    cmd.CommandText = "POS_OrderStatus_Update"
     cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , Null)
+    cmd.Parameters.Append cmd.CreateParameter("@POS_OrderStatusId", adInteger, adParamInput, , StatusId)
     cmd.Execute
 End Sub
 
@@ -857,4 +860,10 @@ Public Function checkAvailableQuantity(ByVal ProductId As String, Optional Locat
         checkAvailableQuantity = chkrec!AvailableQuantity
     End If
     chk_con.Close
+End Function
+
+Public Function OpenCashDrawer()
+    Printer.Font.Name = "control"
+    Printer.Print "A"
+    Printer.EndDoc
 End Function

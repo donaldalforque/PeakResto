@@ -972,6 +972,7 @@ Public POSCustomerId As Long
 Public POSOrderId As String
 Public TableNumber As String
 Public FoodBillNumber As String
+Public OrderType As String
 Dim DiscountPass, SalesReturnPass, OrdersPass, ReprintPass, ItemDeletePass, VoidOrderPass, XreadingPass, ZReadingPass As Boolean
 Public DiscountType As String
 
@@ -993,6 +994,7 @@ Public Sub Initialize()
     TableNumber = ""
     DiscountType = ""
     FoodBillNumber = ""
+    OrderType = ""
     
     On Error Resume Next
     txtBarcode.SetFocus
@@ -1334,6 +1336,7 @@ End Sub
 
 Private Sub btnSaveOrder_Click()
     'validate if items found
+    POS_CashierFrm.OrderType = "DINE-IN"
     If lvList.ListItems.Count <= 0 Then
         MsgBox "Cannot dine-in when there are no orders.", vbCritical, "Error saving.."
         'Exit Sub
@@ -1344,30 +1347,20 @@ End Sub
 
 Private Sub btnTender_Click()
     If lvList.ListItems.Count <= 0 Then Exit Sub
-'    If UCase(lblDiscount.Caption) = UCase("DISCOUNT TYPE: BUSINESS CENTER'S PRICE") Then
-'        If Val(Replace(txtTotal.Caption, ",", "")) < 50000 Then
-'            MsgBox "Process Failed .A business center must have a minimum P50,000.00 worth of product reorder.", vbCritical, "QUICKPOS"
-'            Exit Sub
-'        Else
-'            POS_CashPayFrm.lblAmountDue.Caption = txtTotal.Caption
-'            POS_CashPayFrm.Show
-'        End If
-'    ElseIf UCase(lblDiscount.Caption) = UCase("DISCOUNT TYPE: Mobile Stockist's Price") Then
-'        If Val(Replace(txtTotal.Caption, ",", "")) < 20000 Then
-'            MsgBox "Process Failed .A mobile stockist must have a minimum P20,000.00 worth of product reorder.", vbCritical, "QUICKPOS"
-'            Exit Sub
-'        Else
-'            POS_CashPayFrm.lblAmountDue.Caption = txtTotal.Caption
-'            POS_CashPayFrm.Show
-'        End If
-'    Else
-'        POS_CashPayFrm.lblAmountDue.Caption = txtTotal.Caption
-'        POS_CashPayFrm.Show
-'    End If
+    
+    If OrderType <> "" Then
+        POS_PayFrm.lblAmountDue.Caption = txtTotal.Caption
+        POS_PayFrm.Show
+        Exit Sub
+    End If
+    
+    If DiningOption = "True" Then
+        POS_DiningOptionFrm.Show
+        Exit Sub
+    End If
+    
     If isFastfood = "True" Then
         POS_SaveOrderFrm.Show (1)
-'        POS_PayFrm.lblAmountDue.Caption = txtTotal.Caption
-'        POS_PayFrm.Show
     Else
         POS_PayFrm.lblAmountDue.Caption = txtTotal.Caption
         POS_PayFrm.Show

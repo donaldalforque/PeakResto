@@ -261,8 +261,10 @@ Private Sub btnAccept_Click()
         x = MsgBox(txtCustomer.Text & " is not registered. Would you like to register this customer?", vbQuestion + vbYesNo, "Customer not found.")
         If x = vbYes Then
             POS_AddCustomerFrm.txtName.Text = txtCustomer.Text
+            POS_AddCustomerFrm.txtCode.Text = txtCustomer.Text & Year(Now)
             POS_AddCustomerFrm.txtName.SelStart = Len(POS_AddCustomerFrm.txtName.Text)
-            POS_AddCustomerFrm.Show (1)
+            POS_AddCustomerFrm.btnAccept_Click
+            'POS_AddCustomerFrm.Show (1)
         Else
             txtCustomer.SelStart = 0
             txtCustomer.SelLength = Len(txtCustomer.Text)

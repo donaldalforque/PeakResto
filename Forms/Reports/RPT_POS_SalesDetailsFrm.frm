@@ -1,6 +1,6 @@
 VERSION 5.00
 Object = "{C4847593-972C-11D0-9567-00A0C9273C2A}#8.0#0"; "crviewer.dll"
-Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.1#0"; "mscomctl.ocx"
+Object = "{831FDD16-0C5C-11D2-A9FC-0000F8754DA1}#2.0#0"; "mscomctl.ocx"
 Object = "{86CF1D34-0C5F-11D2-A9FC-0000F8754DA1}#2.0#0"; "MSCOMCT2.OCX"
 Begin VB.Form RPT_POS_SalesDetailsFrm 
    Caption         =   "POS Sales Report by Product"
@@ -74,6 +74,44 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
       TabIndex        =   0
       Top             =   0
       Width           =   3855
+      Begin VB.ComboBox cmbGroup 
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   345
+         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":0000
+         Left            =   1320
+         List            =   "RPT_POS_SalesDetailsFrm.frx":000B
+         Style           =   2  'Dropdown List
+         TabIndex        =   26
+         Top             =   4440
+         Width           =   2415
+      End
+      Begin VB.ComboBox cmbCategory 
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   9.75
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   345
+         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":001C
+         Left            =   1320
+         List            =   "RPT_POS_SalesDetailsFrm.frx":001E
+         Style           =   2  'Dropdown List
+         TabIndex        =   25
+         Top             =   3120
+         Width           =   2415
+      End
       Begin VB.OptionButton optQuantitySold 
          BackColor       =   &H00E0E0E0&
          Caption         =   "by Qty. sold per Product"
@@ -89,7 +127,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   495
          Left            =   1320
          TabIndex        =   22
-         Top             =   3360
+         Top             =   7200
          Visible         =   0   'False
          Width           =   2415
       End
@@ -108,7 +146,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   495
          Left            =   1320
          TabIndex        =   21
-         Top             =   3000
+         Top             =   6840
          Value           =   -1  'True
          Visible         =   0   'False
          Width           =   2415
@@ -124,9 +162,9 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Strikethrough   =   0   'False
          EndProperty
          Height          =   345
-         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":0000
+         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":0020
          Left            =   1320
-         List            =   "RPT_POS_SalesDetailsFrm.frx":0002
+         List            =   "RPT_POS_SalesDetailsFrm.frx":0022
          TabIndex        =   1
          Top             =   720
          Width           =   2415
@@ -149,7 +187,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   87097346
+         Format          =   145686530
          UpDown          =   -1  'True
          CurrentDate     =   42217
       End
@@ -166,7 +204,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   330
          Left            =   1320
          TabIndex        =   6
-         Top             =   4800
+         Top             =   6000
          Width           =   2415
       End
       Begin VB.CommandButton btnGenerate 
@@ -183,7 +221,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   375
          Left            =   1920
          TabIndex        =   5
-         Top             =   5520
+         Top             =   6480
          Width           =   1815
       End
       Begin VB.ComboBox cmbSort 
@@ -197,12 +235,12 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Strikethrough   =   0   'False
          EndProperty
          Height          =   345
-         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":0004
+         ItemData        =   "RPT_POS_SalesDetailsFrm.frx":0024
          Left            =   1320
-         List            =   "RPT_POS_SalesDetailsFrm.frx":001F
+         List            =   "RPT_POS_SalesDetailsFrm.frx":003F
          Style           =   2  'Dropdown List
          TabIndex        =   4
-         Top             =   4440
+         Top             =   5640
          Width           =   2415
       End
       Begin VB.OptionButton optOrderDate 
@@ -237,7 +275,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   330
          Left            =   1320
          TabIndex        =   2
-         Top             =   7320
+         Top             =   7800
          Visible         =   0   'False
          Width           =   2415
       End
@@ -259,7 +297,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   87097345
+         Format          =   145686529
          CurrentDate     =   41686
       End
       Begin MSComCtl2.DTPicker DateFrom 
@@ -280,7 +318,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   87097345
+         Format          =   145686529
          CurrentDate     =   41686
       End
       Begin MSComCtl2.DTPicker TimeTo 
@@ -301,9 +339,66 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
             Italic          =   0   'False
             Strikethrough   =   0   'False
          EndProperty
-         Format          =   87097346
+         Format          =   145686530
          UpDown          =   -1  'True
          CurrentDate     =   42217
+      End
+      Begin VB.Label Label11 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Category"
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   120
+         TabIndex        =   27
+         Top             =   3120
+         Width           =   825
+      End
+      Begin VB.Label Label9 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Group By"
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   14.25
+            Charset         =   0
+            Weight          =   700
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   345
+         Left            =   120
+         TabIndex        =   24
+         Top             =   3960
+         Width           =   1095
+      End
+      Begin VB.Label Label8 
+         AutoSize        =   -1  'True
+         BackStyle       =   0  'Transparent
+         Caption         =   "Group"
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   11.25
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         Height          =   270
+         Left            =   120
+         TabIndex        =   23
+         Top             =   4440
+         Width           =   570
       End
       Begin VB.Label Label3 
          AutoSize        =   -1  'True
@@ -397,7 +492,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   345
          Left            =   120
          TabIndex        =   12
-         Top             =   3960
+         Top             =   5160
          Width           =   870
       End
       Begin VB.Label Label5 
@@ -416,7 +511,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   270
          Left            =   120
          TabIndex        =   11
-         Top             =   4800
+         Top             =   6000
          Width           =   1095
       End
       Begin VB.Label Label6 
@@ -435,7 +530,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   270
          Left            =   120
          TabIndex        =   10
-         Top             =   4440
+         Top             =   5640
          Width           =   645
       End
       Begin VB.Label Label10 
@@ -454,7 +549,7 @@ Begin VB.Form RPT_POS_SalesDetailsFrm
          Height          =   270
          Left            =   120
          TabIndex        =   9
-         Top             =   7320
+         Top             =   7800
          Visible         =   0   'False
          Width           =   795
       End
@@ -506,12 +601,16 @@ Private Sub btnGenerate_Click()
     
     Screen.MousePointer = vbHourglass
     If optDetails.value = True Then
-        Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POSSalesDetails.rpt")
+        If cmbGroup.ListIndex = 0 Then
+            Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POSSalesDetails.rpt")
+        Else
+            Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POSSalesDetails_byCategory.rpt")
+        End If
         crxRpt.EnableParameterPrompting = False
         crxRpt.DiscardSavedData
         Call ResetRptDB(crxRpt)
         
-        crxRpt.ParameterFields.GetItemByName("ReportTitle").AddCurrentValue txtTitle.text
+        crxRpt.ParameterFields.GetItemByName("ReportTitle").AddCurrentValue txtTitle.Text
         crxRpt.ParameterFields.GetItemByName("DateFrom").AddCurrentValue DateFrom.value & " " & TimeFrom.value
         crxRpt.ParameterFields.GetItemByName("DateTo").AddCurrentValue DateTo.value & " " & TimeTo.value
         crxRpt.ParameterFields.GetItemByName("@ProductId").AddCurrentValue ProductId
@@ -519,14 +618,16 @@ Private Sub btnGenerate_Click()
         crxRpt.ParameterFields.GetItemByName("@DateTo").AddCurrentValue DateTo.value
         crxRpt.ParameterFields.GetItemByName("@TimeFrom").AddCurrentValue Str(TimeFrom.value)
         crxRpt.ParameterFields.GetItemByName("@TimeTo").AddCurrentValue Str(TimeTo.value)
-        crxRpt.ParameterFields.GetItemByName("@Sort").AddCurrentValue cmbSort.text
+        crxRpt.ParameterFields.GetItemByName("@Sort").AddCurrentValue cmbSort.Text
+        crxRpt.ParameterFields.GetItemByName("@CategoryId").AddCurrentValue cmbCategory.ItemData(cmbCategory.ListIndex)
+        
     Else
         Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_byQuantitySold.rpt")
         crxRpt.EnableParameterPrompting = False
         crxRpt.DiscardSavedData
         Call ResetRptDB(crxRpt)
         
-        crxRpt.ParameterFields.GetItemByName("ReportTitle").AddCurrentValue txtTitle.text
+        crxRpt.ParameterFields.GetItemByName("ReportTitle").AddCurrentValue txtTitle.Text
         crxRpt.ParameterFields.GetItemByName("DateFrom").AddCurrentValue DateFrom.value & " " & TimeFrom.value
         crxRpt.ParameterFields.GetItemByName("DateTo").AddCurrentValue DateTo.value & " " & TimeTo.value
         crxRpt.ParameterFields.GetItemByName("@ProductId").AddCurrentValue ProductId
@@ -534,7 +635,7 @@ Private Sub btnGenerate_Click()
         crxRpt.ParameterFields.GetItemByName("@DateTo").AddCurrentValue DateTo.value
         crxRpt.ParameterFields.GetItemByName("@TimeFrom").AddCurrentValue Str(TimeFrom.value)
         crxRpt.ParameterFields.GetItemByName("@TimeTo").AddCurrentValue Str(TimeTo.value)
-        crxRpt.ParameterFields.GetItemByName("@Sort").AddCurrentValue cmbSort.text
+        crxRpt.ParameterFields.GetItemByName("@Sort").AddCurrentValue cmbSort.Text
     End If
     
     CRViewer.ReportSource = crxRpt
@@ -546,7 +647,7 @@ End Sub
 
 
 Private Sub cmbProduct_Change()
-    If Trim(cmbProduct.text) = "" Then
+    If Trim(cmbProduct.Text) = "" Then
         ProductId = 0
         lvItemList.Left = -9999
         Exit Sub
@@ -562,7 +663,7 @@ Private Sub cmbProduct_Change()
     cmd.ActiveConnection = con
     cmd.CommandType = adCmdStoredProc
     cmd.CommandText = "BASE_Product_Search1"
-    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, cmbProduct.text)
+    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, cmbProduct.Text)
     Dim LastProductId As Long
     Set rec = cmd.Execute
     If Not rec.EOF Then
@@ -593,7 +694,7 @@ Private Sub cmbProduct_Change()
         lvItemList.Left = -9999
     End If
     
-    If Trim(cmbProduct.text) = "" Then ProductId = 0
+    If Trim(cmbProduct.Text) = "" Then ProductId = 0
     
     con.Close
 End Sub
@@ -633,6 +734,7 @@ End Sub
 
 Private Sub Form_Load()
     cmbSort.ListIndex = 0
+    cmbGroup.ListIndex = 0
     
     Me.Height = 9390
     Me.width = 15180
@@ -642,14 +744,31 @@ Private Sub Form_Load()
     TimeFrom.value = Format("00:00:00", "hh:mm:ss")
     TimeTo.value = Format("23:59:59", "hh:mm:ss")
     
-    txtTitle.text = Me.Caption
+    txtTitle.Text = Me.Caption
     
     lvItemList.ColumnHeaders(1).width = 0
     lvItemList.ColumnHeaders(2).width = lvItemList.width * 0.2
     lvItemList.ColumnHeaders(3).width = lvItemList.width * 0.76
     lvItemList.ColumnHeaders(4).width = lvItemList.width * 0
+    
+    Populate
 End Sub
-
+Private Sub Populate()
+    Set rec = Global_Data("Category")
+    cmbCategory.Clear
+    cmbCategory.AddItem ""
+    cmbCategory.ItemData(cmbCategory.NewIndex) = 0
+    If Not rec.EOF Then
+        Do Until rec.EOF
+            If rec!isActive = "True" Then
+                cmbCategory.AddItem rec!Category
+                cmbCategory.ItemData(cmbCategory.NewIndex) = rec!CategoryId
+            End If
+            rec.MoveNext
+        Loop
+    End If
+    cmbCategory.ListIndex = 0
+End Sub
 
 Private Sub Form_Resize()
    On Error Resume Next
@@ -660,8 +779,8 @@ End Sub
 
 Private Sub lvItemList_DblClick()
     If lvItemList.ListItems.Count > 0 Then
-        ProductId = lvItemList.SelectedItem.text
-        cmbProduct.text = lvItemList.SelectedItem.SubItems(2)
+        ProductId = lvItemList.SelectedItem.Text
+        cmbProduct.Text = lvItemList.SelectedItem.SubItems(2)
         lvItemList.Left = -9999
         cmbProduct.SetFocus
     End If

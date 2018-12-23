@@ -508,6 +508,8 @@ Private Sub btnAccept_Click()
     POS_ConfirmPaymentFrm.Show (1)
     If AllowAccess = False Then Exit Sub
   On Error GoTo ErrMessage
+    btnAccept.Enabled = False
+  
     'SAVE CASH DETAILS
     Dim due, cash, Card, Check, Loyalty, OtherPayment, SumPayment, SalesTax, TaxExempt, TotalDiscount As Double
     Dim item As MSComctlLib.ListItem
@@ -594,6 +596,7 @@ Private Sub btnAccept_Click()
         cmd.Parameters.Append cmd.CreateParameter("@Remarks", adVarChar, adParamInput, 250, Null)
         cmd.Parameters.Append cmd.CreateParameter("@FoodBillNumber", adVarChar, adParamInput, 250, POS_CashierFrm.FoodBillNumber)
         cmd.Parameters.Append cmd.CreateParameter("@TableNumber", adVarChar, adParamInput, 250, POS_CashierFrm.TableNumber)
+        cmd.Parameters.Append cmd.CreateParameter("@OrderType", adVarChar, adParamInput, 250, POS_CashierFrm.OrderType)
         cmd.Execute
         
         POS_SalesId = cmd.Parameters("@POS_SalesId")
@@ -753,21 +756,20 @@ Private Sub btnAccept_Click()
         cmd.Execute
         
         'Delete Saved Order v1.0.40
-        If isFastfood = "False" Then
+        'Update saved orders to status 2-completed
+        'If isFastfood = "False" Then
             Set cmd = New ADODB.Command
             cmd.ActiveConnection = con
             cmd.CommandType = adCmdStoredProc
-            cmd.CommandText = "POS_Order_Delete"
+            'cmd.CommandText = "POS_Order_Update"
+            cmd.CommandText = "POS_OrderStatus_Update"
             cmd.Parameters.Append cmd.CreateParameter("@POS_OrderId", adInteger, adParamInput, , POS_CashierFrm.POSOrderId)
+            cmd.Parameters.Append cmd.CreateParameter("@POS_OrderStatusId", adInteger, adParamInput, , 2)
             cmd.Execute
-        End If
+        'End If
         
         con.CommitTrans
         con.Close
-        
-'        'SHOW CHANGE
-'        lblChangeCaption.Visible = True
-'        lblChange.Visible = True
         
         Unload POS_SavingFrm
         Dim x As Variant
@@ -787,6 +789,16 @@ Private Sub btnAccept_Click()
             crxRpt.ParameterFields(1).AddCurrentValue ""
 
             Call ResetRptDB(crxRpt)
+            
+            'OPEN DRAWER
+            Printer.Font.Name = "control"
+            Printer.ScaleLeft = 0
+            Printer.ScaleTop = 0
+            Printer.CurrentX = 0
+            Printer.CurrentY = 0
+            Printer.Print "A"
+            Printer.EndDoc
+            
             crxRpt.PrintOut False
             '**END PRINT RECEIPT**
             
@@ -839,12 +851,13 @@ ErrMessage:
     con.RollbackTrans
     Unload POS_SavingFrm
     txtCash.Enabled = True
+    btnAccept.Enabled = True
     If IsNumeric(Err.Description) = True Then
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
-        BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
+        'BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & ErrorCodes(Err.Description)
     Else
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & Err.Description
-        BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & Err.Description
+        'BASE_ContainerFrm.statusBar_Main.Panels(1).Text = ErrorCodes(0) & " " & Err.Description
     End If
         GLOBAL_MessageFrm.Show (1)
 End Sub
@@ -907,6 +920,10 @@ Private Sub Form_Load()
     End If
     
     DefaultPrinter (POSPrinter)
+End Sub
+
+Private Sub Form_Unload(Cancel As Integer)
+    POS_CashierFrm.OrderType = ""
 End Sub
 
 Private Sub txtCard_Change()

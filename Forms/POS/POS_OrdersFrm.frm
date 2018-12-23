@@ -204,7 +204,7 @@ Begin VB.Form POS_OrdersFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   7
+      NumItems        =   8
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "POSOrderId"
          Object.Width           =   0
@@ -238,6 +238,10 @@ Begin VB.Form POS_OrdersFrm
       BeginProperty ColumnHeader(7) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   6
          Text            =   "CustomerId"
+         Object.Width           =   0
+      EndProperty
+      BeginProperty ColumnHeader(8) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   7
          Object.Width           =   0
       EndProperty
    End
@@ -350,6 +354,7 @@ Private Sub btnBillOut_Click()
         POS_CashierFrm.POSOrderId = lvList.SelectedItem.Text
         POS_CashierFrm.TableNumber = lvList.SelectedItem.SubItems(2)
         POS_CashierFrm.FoodBillNumber = lvList.SelectedItem.SubItems(1)
+        POS_CashierFrm.OrderType = lvList.SelectedItem.SubItems(7)
 
         POS_PayFrm.lblAmountDue.Caption = POS_CashierFrm.txtTotal.Caption
         POS_PayFrm.Show
@@ -382,21 +387,24 @@ Private Sub Populate()
     lvList.ListItems.Clear
     If Not rec.EOF Then
         Do Until rec.EOF
-            Set item = lvList.ListItems.add(, , rec!POS_OrderId)
-                item.SubItems(1) = rec!pos_ordernumber
-                item.SubItems(2) = rec!TableNumber
-                item.SubItems(3) = FormatNumber(rec!Total, 2, vbTrue, vbFalse)
-                item.SubItems(6) = NVAL(rec!CustomerId)
-                If IsNull(rec!Name) Then
-                    item.SubItems(4) = ""
-                Else
-                    item.SubItems(4) = rec!Name
-                End If
-                If IsNull(rec!Status) = True Then
-                    item.SubItems(5) = ""
-                Else
-                    item.SubItems(5) = rec!Status
-                End If
+            If rec!POS_OrderStatusId = 1 Then
+                Set item = lvList.ListItems.add(, , rec!POS_OrderId)
+                    item.SubItems(1) = rec!pos_ordernumber
+                    item.SubItems(2) = rec!TableNumber
+                    item.SubItems(3) = FormatNumber(rec!Total, 2, vbTrue, vbFalse)
+                    item.SubItems(6) = NVAL(rec!CustomerId)
+                    item.SubItems(7) = rec!OrderType
+                    If IsNull(rec!Name) Then
+                        item.SubItems(4) = ""
+                    Else
+                        item.SubItems(4) = rec!Name
+                    End If
+                    If IsNull(rec!Status) = True Then
+                        item.SubItems(5) = ""
+                    Else
+                        item.SubItems(5) = rec!Status
+                    End If
+            End If
             rec.MoveNext
         Loop
     End If
@@ -481,6 +489,8 @@ Private Sub btnNewCustomer_Click()
         POS_CashierFrm.POSOrderId = lvList.SelectedItem.Text
         POS_CashierFrm.TableNumber = lvList.SelectedItem.SubItems(2)
         POS_CashierFrm.FoodBillNumber = lvList.SelectedItem.SubItems(1)
+        POS_CashierFrm.OrderType = lvList.SelectedItem.SubItems(7)
+        
         Unload Me
     Else
     End If

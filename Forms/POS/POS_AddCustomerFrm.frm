@@ -379,11 +379,11 @@ Option Explicit
 Private Function isValidated() As Boolean
     isValidated = False
     'CHECK EMPTY FIELDS
-    If Trim(txtCode.text) = "" Then
+    If Trim(txtCode.Text) = "" Then
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(40)
         GLOBAL_MessageFrm.Show (1)
         txtCode.SetFocus
-    ElseIf Trim(txtName.text) = "" Then
+    ElseIf Trim(txtName.Text) = "" Then
         GLOBAL_MessageFrm.lblErrorMessage.Caption = ErrorCodes(0) & " " & ErrorCodes(18)
         GLOBAL_MessageFrm.Show (1)
         txtName.SetFocus
@@ -391,7 +391,7 @@ Private Function isValidated() As Boolean
         isValidated = True
     End If
 End Function
-Private Sub btnAccept_Click()
+Public Sub btnAccept_Click()
     If isValidated = True Then
         On Error GoTo ErrHandler
         Set con = New ADODB.Connection
@@ -405,12 +405,12 @@ Private Sub btnAccept_Click()
         cmd.CommandType = adCmdStoredProc
         
         cmd.Parameters.Append cmd.CreateParameter("@CustomerId", adInteger, adParamInputOutput, , 0)
-        cmd.Parameters.Append cmd.CreateParameter("@CustomerCode", adVarChar, adParamInput, 50, txtCode.text)
-        cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtName.text)
-        cmd.Parameters.Append cmd.CreateParameter("@Phone", adVarChar, adParamInput, 50, txtPhone.text)
-        cmd.Parameters.Append cmd.CreateParameter("@Mobile", adVarChar, adParamInput, 50, txtMobile.text)
-        cmd.Parameters.Append cmd.CreateParameter("@Address", adVarChar, adParamInput, 500, txtAddress.text)
-        cmd.Parameters.Append cmd.CreateParameter("@CardNumber", adVarChar, adParamInput, 250, txtCardnumber.text)
+        cmd.Parameters.Append cmd.CreateParameter("@CustomerCode", adVarChar, adParamInput, 50, txtCode.Text)
+        cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 500, txtName.Text)
+        cmd.Parameters.Append cmd.CreateParameter("@Phone", adVarChar, adParamInput, 50, txtPhone.Text)
+        cmd.Parameters.Append cmd.CreateParameter("@Mobile", adVarChar, adParamInput, 50, txtMobile.Text)
+        cmd.Parameters.Append cmd.CreateParameter("@Address", adVarChar, adParamInput, 500, txtAddress.Text)
+        cmd.Parameters.Append cmd.CreateParameter("@CardNumber", adVarChar, adParamInput, 250, txtCardNumber.Text)
                         
         cmd.CommandText = "BASE_Customer_Insert"
         cmd.Execute
@@ -419,7 +419,7 @@ Private Sub btnAccept_Click()
         con.CommitTrans
         con.Close
         POS_CustomerNameFrm.txtCustomer.SelStart = 0
-        POS_CustomerNameFrm.txtCustomer.SelLength = Len(POS_CustomerNameFrm.txtCustomer.text)
+        POS_CustomerNameFrm.txtCustomer.SelLength = Len(POS_CustomerNameFrm.txtCustomer.Text)
         POS_CustomerNameFrm.txtCustomer_Change
         Unload Me
     End If

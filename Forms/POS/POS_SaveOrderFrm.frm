@@ -13,6 +13,27 @@ Begin VB.Form POS_SaveOrderFrm
    ScaleWidth      =   7245
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.TextBox txtOrderType 
+      Alignment       =   2  'Center
+      Appearance      =   0  'Flat
+      BackColor       =   &H8000000F&
+      Enabled         =   0   'False
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   12
+         Charset         =   0
+         Weight          =   700
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   375
+      Left            =   5760
+      TabIndex        =   5
+      Text            =   "DINE-IN"
+      Top             =   960
+      Width           =   1215
+   End
    Begin VB.CommandButton btnAccept 
       Caption         =   "ENTER: Save"
       BeginProperty Font 
@@ -65,7 +86,7 @@ Begin VB.Form POS_SaveOrderFrm
       Left            =   2760
       TabIndex        =   0
       Top             =   960
-      Width           =   4215
+      Width           =   2895
    End
    Begin VB.Label Label2 
       AutoSize        =   -1  'True
@@ -125,16 +146,16 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub btnAccept_Click()
-'    On Error GoTo ErrHandler
+    On Error GoTo ErrHandler
     
     POS_CashierFrm.TableNumber = txtTableNumber.Text
+    POS_CashierFrm.OrderType = txtOrderType.Text
     
     Set con = New ADODB.Connection
     Set rec = New ADODB.Recordset
     
     con.ConnectionString = ConnString
     con.Open
-    
     'Save Order
     
     Dim due As Double
@@ -160,6 +181,7 @@ Private Sub btnAccept_Click()
                           cmd.Parameters("@Discount").NumericScale = 2
                           cmd.Parameters("@Discount").Precision = 18
     cmd.Parameters.Append cmd.CreateParameter("@CustomerId", adInteger, adParamInput, , POS_CashierFrm.POSCustomerId) 'NOT SET
+    cmd.Parameters.Append cmd.CreateParameter("@OrderType", adVarChar, adParamInput, 50, txtOrderType.Text)
     cmd.Parameters.Append cmd.CreateParameter("@UserId", adInteger, adParamInput, , UserId)
     cmd.Parameters.Append cmd.CreateParameter("@WorkStationid", adInteger, adParamInput, , WorkstationId)
     
@@ -212,7 +234,7 @@ Private Sub btnAccept_Click()
         cmd.Parameters.Append cmd.CreateParameter("@ItemDiscount", adDecimal, adParamInput, , Val(Replace(item.SubItems(4), ",", "")))
                               cmd.Parameters("@ItemDiscount").NumericScale = 2
                               cmd.Parameters("@ItemDiscount").Precision = 18
-        cmd.Parameters.Append cmd.CreateParameter("@ActualQuantity", adDecimal, adParamInput, , (Val(Replace(item.SubItems(1), ",", "")) * Val(Replace(item.SubItems(16), ",", ""))))
+        cmd.Parameters.Append cmd.CreateParameter("@ActualQuantity", adDecimal, adParamInput, , Val(Replace(item.SubItems(16), ",", "")))
                               cmd.Parameters("@ActualQuantity").NumericScale = 2
                               cmd.Parameters("@ActualQuantity").Precision = 18
         cmd.Parameters.Append cmd.CreateParameter("@LocationId", adInteger, adParamInput, , POS_CashierFrm.POSLocationId)
@@ -221,8 +243,16 @@ Private Sub btnAccept_Click()
     Next
     con.Close
     
-    
     'Clear Orders
+'    If DiningOption = "True" Then
+'        If POS_CashierFrm.OrderType <> "DINE-IN" Then
+'            Unload Me
+'            POS_PayFrm.lblAmountDue.Caption = POS_CashierFrm.txtTotal.Caption
+'            POS_PayFrm.Show (1)
+'            Exit Sub
+'        End If
+'    End If
+    
     If isFastfood = "True" Then
         Unload Me
         POS_PayFrm.lblAmountDue.Caption = POS_CashierFrm.txtTotal.Caption
