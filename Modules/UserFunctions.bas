@@ -19,7 +19,7 @@ Public isModify As Boolean
 Public PrintOptionCount As Integer
 Public PrintLabel1, PrintLabel2, PrintLabel3 As String
 Public isFastfood, PrintDiscount, DiningOption As String
-Public AllowNegativeInventory As Boolean
+Public AllowNegativeInventory, ShowSecondDisplay As Boolean
 
 Public Function Hostname() As String
     'Get Hostname from Text

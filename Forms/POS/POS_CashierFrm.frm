@@ -1045,6 +1045,39 @@ Public Sub CountTotal()
     Next
     txtTotal.Caption = FormatNumber(txtTotal.Caption, 2, vbTrue)
     lblTotalItems.Caption = "TOTAL ITEMS: " & FormatNumber(totalQty, 2, vbTrue, vbFalse)
+    
+    If ShowSecondDisplay = True Then
+        If POS_SecondDisplayFrm.Visible = True Then
+            With POS_SecondDisplayFrm.lvList
+                .ListItems.Clear
+                Dim item2 As MSComctlLib.ListItem
+                For Each item In lvList.ListItems
+                    Set item2 = .ListItems.add(, , item.Text)
+                        item2.SubItems(1) = item.SubItems(1)
+                        item2.SubItems(2) = item.SubItems(2)
+                        item2.SubItems(3) = item.SubItems(3)
+                        item2.SubItems(4) = item.SubItems(4)
+                        item2.SubItems(5) = item.SubItems(5)
+                        item2.SubItems(6) = item.SubItems(6)
+                        item2.SubItems(7) = item.SubItems(7)
+                        item2.SubItems(8) = item.SubItems(8)
+                        item2.SubItems(9) = item.SubItems(9)
+                        item2.SubItems(10) = item.SubItems(10)
+                        item2.SubItems(11) = item.SubItems(11)
+                        item2.SubItems(12) = item.SubItems(12)
+                        item2.SubItems(13) = item.SubItems(13)
+                        item2.SubItems(14) = item.SubItems(14)
+                        item2.SubItems(15) = item.SubItems(15)
+                        item2.SubItems(16) = item.SubItems(16)
+                        item2.SubItems(17) = item.SubItems(17)
+                        item2.SubItems(18) = item.SubItems(18)
+                        item2.SubItems(19) = item.SubItems(19)
+                        item2.SubItems(20) = item.SubItems(20)
+                Next
+                POS_SecondDisplayFrm.CountTotal
+            End With
+        End If
+    End If
 End Sub
 
 Public Sub CountTax()
@@ -1255,6 +1288,9 @@ Private Sub btnNull_Click()
 '        'INV_NewProductFrm.MDIChild = False
 '        INV_NewProductFrm.Show
 '    End If
+    If ShowSecondDisplay = True Then
+        POS_SecondDisplayFrm.Show
+    End If
 End Sub
 
 Private Sub btnOrders_Click()
@@ -1498,6 +1534,7 @@ Private Sub Form_Activate()
     'lblDiscount.Caption = "DISCOUNT: " & discount
     On Error Resume Next
     txtBarcode.SetFocus
+    CountTotal 'to call second display
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -1626,7 +1663,6 @@ Private Sub Form_Load()
     ClearClassData (1)
     ClearClassData (2)
     ClearClassData (3)
-    
 End Sub
 
 Private Sub txtQuantity_Change()
@@ -1637,6 +1673,14 @@ End Sub
 
 Private Sub txtQuantity_GotFocus()
     selectText txtQuantity
+End Sub
+
+Private Sub lblCustomer_Change()
+    If ShowSecondDisplay = True Then
+        If POS_SecondDisplayFrm.Visible = True Then
+            POS_SecondDisplayFrm.lblCustomer.Caption = lblCustomer.Caption
+        End If
+    End If
 End Sub
 
 Private Sub timer_date_Timer()

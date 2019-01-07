@@ -225,7 +225,7 @@ Begin VB.Form BASE_SystemSettingsFrm
          End
          Begin VB.CommandButton btnShrinkages 
             Appearance      =   0  'Flat
-            Caption         =   "Shrinkages"
+            Caption         =   "Second Display"
             BeginProperty Font 
                Name            =   "Calibri"
                Size            =   9.75
@@ -239,7 +239,6 @@ Begin VB.Form BASE_SystemSettingsFrm
             Left            =   240
             TabIndex        =   6
             Top             =   3840
-            Visible         =   0   'False
             Width           =   2175
          End
          Begin VB.CommandButton btnDiscount 
@@ -414,7 +413,7 @@ Begin VB.Form BASE_SystemSettingsFrm
          End
          Begin VB.Label Label18 
             BackStyle       =   0  'Transparent
-            Caption         =   "Purchase order product shrinkages."
+            Caption         =   "Shows a second display for customers."
             BeginProperty Font 
                Name            =   "Calibri"
                Size            =   9
@@ -429,7 +428,6 @@ Begin VB.Form BASE_SystemSettingsFrm
             Left            =   2760
             TabIndex        =   25
             Top             =   3900
-            Visible         =   0   'False
             Width           =   4695
          End
          Begin VB.Label Label17 

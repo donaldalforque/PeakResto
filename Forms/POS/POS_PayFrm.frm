@@ -499,8 +499,8 @@ Option Explicit
 
 Public Sub ComputeChange()
     Dim change As Double
-    change = Val(Replace(lblAmountDue.Caption, ",", "")) - Val(Replace(txtCash.Text, ",", "")) - Val(Replace(txtCard.Text, ",", "")) _
-            - Val(Replace(txtCheck.Text, ",", "")) - Val(Replace(txtLoyalty.Text, ",", "")) - Val(Replace(txtOthers.Text, ",", ""))
+    change = (Val(Replace(lblAmountDue.Caption, ",", "")) - Val(Replace(txtCash.Text, ",", "")) - Val(Replace(txtCard.Text, ",", "")) _
+            - Val(Replace(txtCheck.Text, ",", "")) - Val(Replace(txtLoyalty.Text, ",", "")) - Val(Replace(txtOthers.Text, ",", ""))) * -1
     lblChange.Caption = FormatNumber(change, 2, vbTrue, vbFalse)
 End Sub
 
@@ -844,6 +844,15 @@ Private Sub btnAccept_Click()
         
         POS_LastChangeFrm.lblChange.Caption = lblChange.Caption
         Unload Me
+        
+        If ShowSecondDisplay = True Then
+            If POS_SecondDisplayFrm.Visible = True Then
+                POS_SecondChangeFrm.lblChange.Caption = POS_LastChangeFrm.lblChange.Caption
+                POS_SecondChangeFrm.Show
+            End If
+        End If
+        
+        
         POS_LastChangeFrm.Show (1)
     End If
     Exit Sub
