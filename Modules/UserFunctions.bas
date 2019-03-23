@@ -19,7 +19,9 @@ Public isModify As Boolean
 Public PrintOptionCount As Integer
 Public PrintLabel1, PrintLabel2, PrintLabel3 As String
 Public isFastfood, PrintDiscount, DiningOption As String
-Public AllowNegativeInventory, ShowSecondDisplay As Boolean
+Public AllowNegativeInventory, ShowSecondDisplay, SecondDisplayActivated As Boolean
+Public CategoryFilter1, CategoryFilter2, CategoryFilter3 As Long
+Public Printer1, Printer2, Printer3 As String
 
 Public Function Hostname() As String
     'Get Hostname from Text
@@ -697,6 +699,12 @@ Public Sub GetPOSPrintSettings()
         PrintLabel1 = rec!PrintLabel1
         PrintLabel2 = rec!PrintLabel2
         PrintLabel3 = rec!PrintLabel3
+        Printer1 = rec!Printer1
+        Printer2 = rec!Printer2
+        Printer3 = rec!Printer3
+        CategoryFilter1 = rec!CategoryId1
+        CategoryFilter2 = rec!CategoryId2
+        CategoryFilter3 = rec!CategoryId3
     End If
     con.Close
 End Sub
@@ -866,4 +874,14 @@ Public Function OpenCashDrawer()
     Printer.Font.Name = "control"
     Printer.Print "A"
     Printer.EndDoc
+End Function
+
+Public Function CountCategory(ByVal categoryid As Integer, ByVal lv As ListView) As Boolean
+    Dim item As MSComctlLib.ListItem
+    For Each item In lv.ListItems
+        If Val(item.SubItems(21)) = categoryid Then
+            CountCategory = True
+            Exit Function
+        End If
+    Next
 End Function

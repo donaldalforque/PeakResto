@@ -6,14 +6,117 @@ Begin VB.Form POS_PrintOptionsFrm
    ClientHeight    =   3390
    ClientLeft      =   45
    ClientTop       =   390
-   ClientWidth     =   5055
+   ClientWidth     =   12015
+   Icon            =   "POS_PrintOptionsFrm.frx":0000
    LinkTopic       =   "Form1"
    MaxButton       =   0   'False
    MinButton       =   0   'False
    ScaleHeight     =   3390
-   ScaleWidth      =   5055
+   ScaleWidth      =   12015
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
+   Begin VB.ComboBox cmbCategory3 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   9960
+      Style           =   2  'Dropdown List
+      TabIndex        =   22
+      Top             =   2760
+      Width           =   1815
+   End
+   Begin VB.ComboBox cmbCategory2 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   9960
+      Style           =   2  'Dropdown List
+      TabIndex        =   20
+      Top             =   2400
+      Width           =   1815
+   End
+   Begin VB.ComboBox cmbCategory1 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   9960
+      Style           =   2  'Dropdown List
+      TabIndex        =   18
+      Top             =   2040
+      Width           =   1815
+   End
+   Begin VB.ComboBox cmbPrinter3 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   5520
+      Style           =   2  'Dropdown List
+      TabIndex        =   17
+      Top             =   2760
+      Width           =   2655
+   End
+   Begin VB.ComboBox cmbPrinter2 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   5520
+      Style           =   2  'Dropdown List
+      TabIndex        =   15
+      Top             =   2400
+      Width           =   2655
+   End
+   Begin VB.ComboBox cmbPrinter1 
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   345
+      Left            =   5520
+      Style           =   2  'Dropdown List
+      TabIndex        =   13
+      Top             =   2040
+      Width           =   2655
+   End
    Begin VB.TextBox txtPrintLabel3 
       Alignment       =   1  'Right Justify
       BeginProperty Font 
@@ -128,8 +231,8 @@ Begin VB.Form POS_PrintOptionsFrm
       EndProperty
    End
    Begin MSComctlLib.ImageList ImageList1 
-      Left            =   8880
-      Top             =   960
+      Left            =   11640
+      Top             =   840
       _ExtentX        =   1005
       _ExtentY        =   1005
       BackColor       =   -2147483643
@@ -140,22 +243,136 @@ Begin VB.Form POS_PrintOptionsFrm
       BeginProperty Images {2C247F25-8591-11D1-B16A-00C0F0283628} 
          NumListImages   =   4
          BeginProperty ListImage1 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "POS_PrintOptionsFrm.frx":0000
+            Picture         =   "POS_PrintOptionsFrm.frx":000C
             Key             =   ""
          EndProperty
          BeginProperty ListImage2 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "POS_PrintOptionsFrm.frx":6862
+            Picture         =   "POS_PrintOptionsFrm.frx":686E
             Key             =   ""
          EndProperty
          BeginProperty ListImage3 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "POS_PrintOptionsFrm.frx":D0C4
+            Picture         =   "POS_PrintOptionsFrm.frx":D0D0
             Key             =   ""
          EndProperty
          BeginProperty ListImage4 {2C247F27-8591-11D1-B16A-00C0F0283628} 
-            Picture         =   "POS_PrintOptionsFrm.frx":13926
+            Picture         =   "POS_PrintOptionsFrm.frx":13932
             Key             =   ""
          EndProperty
       EndProperty
+   End
+   Begin VB.Label Label12 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Product Category"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   8400
+      TabIndex        =   23
+      Top             =   2760
+      Width           =   1410
+   End
+   Begin VB.Label Label11 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Product Category"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   8400
+      TabIndex        =   21
+      Top             =   2400
+      Width           =   1410
+   End
+   Begin VB.Label Label10 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Product Category"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   8400
+      TabIndex        =   19
+      Top             =   2040
+      Width           =   1410
+   End
+   Begin VB.Label Label9 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Printer"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   4800
+      TabIndex        =   16
+      Top             =   2760
+      Width           =   570
+   End
+   Begin VB.Label Label8 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Printer"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   4800
+      TabIndex        =   14
+      Top             =   2400
+      Width           =   570
+   End
+   Begin VB.Label Label5 
+      AutoSize        =   -1  'True
+      BackStyle       =   0  'Transparent
+      Caption         =   "Printer"
+      BeginProperty Font 
+         Name            =   "Calibri"
+         Size            =   9.75
+         Charset         =   0
+         Weight          =   400
+         Underline       =   0   'False
+         Italic          =   0   'False
+         Strikethrough   =   0   'False
+      EndProperty
+      Height          =   225
+      Left            =   4800
+      TabIndex        =   12
+      Top             =   2040
+      Width           =   570
    End
    Begin VB.Label Label4 
       AutoSize        =   -1  'True
@@ -277,7 +494,7 @@ Begin VB.Form POS_PrintOptionsFrm
       Height          =   2775
       Left            =   120
       Top             =   480
-      Width           =   4815
+      Width           =   11775
    End
 End
 Attribute VB_Name = "POS_PrintOptionsFrm"
@@ -286,6 +503,9 @@ Attribute VB_Creatable = False
 Attribute VB_PredeclaredId = True
 Attribute VB_Exposed = False
 Private Sub Form_Load()
+    PopulatePrinters
+    Populate "Category"
+
     Dim item As MSComctlLib.ListItem
     Set con = New ADODB.Connection
     Set rec = New ADODB.Recordset
@@ -303,11 +523,83 @@ Private Sub Form_Load()
             txtPrintLabel1.Text = rec!PrintLabel1
             txtPrintLabel2.Text = rec!PrintLabel2
             txtPrintLabel3.Text = rec!PrintLabel3
+            cmbPrinter1.Text = rec!Printer1
+            cmbPrinter2.Text = rec!Printer2
+            cmbPrinter3.Text = rec!Printer3
+            cmbCategory1.Text = rec!category1
+            cmbCategory2.Text = rec!category2
+            cmbCategory3.Text = rec!category3
             rec.MoveNext
         Loop
     End If
     con.Close
+    
 End Sub
+
+Public Sub PopulatePrinters()
+    On Error Resume Next
+    Dim i As Long
+    cmbPrinter1.Clear
+    cmbPrinter2.Clear
+    cmbPrinter3.Clear
+    
+    i = Printers.Count
+    
+    If i = 0 Then
+        cmbPrinter1.AddItem "No printers installed."
+        cmbPrinter2.AddItem "No printers installed."
+        cmbPrinter3.AddItem "No printers installed."
+    Else
+        For i = 0 To i - 1
+            cmbPrinter1.AddItem Printers(i).DeviceName
+            cmbPrinter2.AddItem Printers(i).DeviceName
+            cmbPrinter3.AddItem Printers(i).DeviceName
+        Next
+        
+        cmbPrinter1.ListIndex = 0
+        cmbPrinter2.ListIndex = 0
+        cmbPrinter3.ListIndex = 0
+        
+        cmbPrinter1.Text = "EPSON TM-U220 Receipt"
+        cmbPrinter2.Text = "EPSON TM-U220 Receipt"
+        cmbPrinter3.Text = "EPSON TM-U220 Receipt"
+    End If
+End Sub
+Public Sub Populate(ByVal data As String)
+    Dim item As MSComctlLib.ListItem
+    Select Case data
+        Case "Category"
+            Set rec = New ADODB.Recordset
+            Set rec = Global_Data("Category")
+            cmbCategory1.Clear
+            cmbCategory2.Clear
+            cmbCategory3.Clear
+            cmbCategory1.AddItem ""
+            cmbCategory1.ItemData(cmbCategory1.NewIndex) = 0
+            cmbCategory2.AddItem ""
+            cmbCategory2.ItemData(cmbCategory2.NewIndex) = 0
+            cmbCategory3.AddItem ""
+            cmbCategory3.ItemData(cmbCategory3.NewIndex) = 0
+            cmbCategory1.ListIndex = 0
+            cmbCategory2.ListIndex = 0
+            cmbCategory3.ListIndex = 0
+            
+            If Not rec.EOF Then
+                Do Until rec.EOF
+                    If rec!isActive = "True" Then
+                        cmbCategory1.AddItem rec!Category
+                        cmbCategory1.ItemData(cmbCategory1.NewIndex) = rec!CategoryId
+                        cmbCategory2.AddItem rec!Category
+                        cmbCategory2.ItemData(cmbCategory2.NewIndex) = rec!CategoryId
+                        cmbCategory3.AddItem rec!Category
+                        cmbCategory3.ItemData(cmbCategory3.NewIndex) = rec!CategoryId
+                    End If
+                    rec.MoveNext
+                Loop
+            End If
+    End Select
+End Sub
+
 
 Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
     On Error GoTo ErrorHandler:
@@ -332,6 +624,16 @@ Private Sub tb_Standard_ButtonClick(ByVal Button As MSComctlLib.Button)
             cmd.Parameters.Append cmd.CreateParameter("@PrintLabel1", adVarChar, adParamInput, 250, txtPrintLabel1.Text)
             cmd.Parameters.Append cmd.CreateParameter("@PrintLabel2", adVarChar, adParamInput, 250, txtPrintLabel2.Text)
             cmd.Parameters.Append cmd.CreateParameter("@PrintLabel3", adVarChar, adParamInput, 250, txtPrintLabel3.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@Printer1", adVarChar, adParamInput, 250, cmbPrinter1.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@Printer2", adVarChar, adParamInput, 250, cmbPrinter2.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@Printer3", adVarChar, adParamInput, 250, cmbPrinter3.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@CategoryId1", adVarChar, adParamInput, 250, cmbCategory1.ItemData(cmbCategory1.ListIndex))
+            cmd.Parameters.Append cmd.CreateParameter("@CategoryId2", adVarChar, adParamInput, 250, cmbCategory2.ItemData(cmbCategory2.ListIndex))
+            cmd.Parameters.Append cmd.CreateParameter("@CategoryId3", adVarChar, adParamInput, 250, cmbCategory3.ItemData(cmbCategory3.ListIndex))
+            cmd.Parameters.Append cmd.CreateParameter("@Category1", adVarChar, adParamInput, 250, cmbCategory1.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@Category2", adVarChar, adParamInput, 250, cmbCategory2.Text)
+            cmd.Parameters.Append cmd.CreateParameter("@Category3", adVarChar, adParamInput, 250, cmbCategory3.Text)
+            
             cmd.Execute
             con.Close
             

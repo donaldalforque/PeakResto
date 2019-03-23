@@ -82,7 +82,7 @@ Begin VB.Form POS_ItemSearchFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   13
+      NumItems        =   14
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Name"
          Object.Width           =   15478
@@ -146,6 +146,11 @@ Begin VB.Form POS_ItemSearchFrm
       BeginProperty ColumnHeader(13) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   12
          Text            =   "Unit"
+         Object.Width           =   0
+      EndProperty
+      BeginProperty ColumnHeader(14) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   13
+         Text            =   "CategoryId"
          Object.Width           =   0
       EndProperty
    End
@@ -303,11 +308,11 @@ Public Sub btnReturn_Click()
 End Sub
 
 Private Sub btnName_Click()
-    txtname.SetFocus
+    txtName.SetFocus
 End Sub
 Private Sub Form_Activate()
     On Error Resume Next
-    txtname.SetFocus
+    txtName.SetFocus
 End Sub
 
 Private Sub Form_KeyDown(KeyCode As Integer, Shift As Integer)
@@ -348,7 +353,7 @@ Private Sub lvItemSearch_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub txtBarcode_Change()
-    If Trim(txtBarcode.text) = "" Then Exit Sub
+    If Trim(txtBarcode.Text) = "" Then Exit Sub
     Set con = New ADODB.Connection
     Set rec = New ADODB.Recordset
     Set cmd = New ADODB.Command
@@ -362,7 +367,7 @@ Private Sub txtBarcode_Change()
     cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, Null)
     cmd.Parameters.Append cmd.CreateParameter("@Barcode", adVarChar, adParamInput, 50, Null)
     cmd.Parameters.Append cmd.CreateParameter("@LocationId", adInteger, adParamInput, , POS_CashierFrm.POSLocationId)
-    cmd.Parameters.Append cmd.CreateParameter("@Itemcode", adVarChar, adParamInput, 250, txtBarcode.text)
+    cmd.Parameters.Append cmd.CreateParameter("@Itemcode", adVarChar, adParamInput, 250, txtBarcode.Text)
     Set rec = cmd.Execute
     lvItemSearch.ListItems.Clear
     If Not rec.EOF Then
@@ -380,7 +385,7 @@ Private Sub txtBarcode_Change()
                     item.SubItems(10) = rec!unitcost
                     item.SubItems(11) = rec!Percentage
                     item.SubItems(12) = rec!Uom
-                    
+                    item.SubItems(13) = rec!CategoryId
 '                    If UCase(POS_CashierFrm.lblDiscount.Caption) = UCase("| DISCOUNT TYPE: NONE") Then
                         item.SubItems(1) = FormatNumber(rec!unitprice, 2, vbTrue)
 '                    ElseIf UCase(POS_CashierFrm.lblDiscount.Caption) = UCase("| DISCOUNT TYPE: DP") Then
@@ -456,7 +461,7 @@ Private Sub txtBarcode_KeyDown(KeyCode As Integer, Shift As Integer)
 End Sub
 
 Private Sub txtName_Change()
-    If Trim(txtname.text) = "" Then Exit Sub
+    If Trim(txtName.Text) = "" Then Exit Sub
     Set con = New ADODB.Connection
     Set rec = New ADODB.Recordset
     Set cmd = New ADODB.Command
@@ -467,7 +472,7 @@ Private Sub txtName_Change()
     cmd.ActiveConnection = con
     cmd.CommandType = adCmdStoredProc
     cmd.CommandText = "POS_ItemSearch"
-    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, txtname.text)
+    cmd.Parameters.Append cmd.CreateParameter("@Name", adVarChar, adParamInput, 250, txtName.Text)
     cmd.Parameters.Append cmd.CreateParameter("@Barcode", adVarChar, adParamInput, 50, Null)
     cmd.Parameters.Append cmd.CreateParameter("@LocationId", adInteger, adParamInput, , POS_CashierFrm.POSLocationId)
     Set rec = cmd.Execute
@@ -487,6 +492,7 @@ Private Sub txtName_Change()
                     item.SubItems(10) = rec!unitcost
                     item.SubItems(11) = rec!Percentage
                     item.SubItems(12) = rec!Uom
+                    item.SubItems(13) = rec!CategoryId
                     
 '                    If UCase(POS_CashierFrm.lblDiscount.Caption) = UCase("| DISCOUNT TYPE: NONE") Then
                         item.SubItems(1) = FormatNumber(rec!unitprice, 2, vbTrue)
@@ -505,7 +511,7 @@ Private Sub txtName_Change()
 End Sub
 
 Private Sub txtName_GotFocus()
-    selectText txtname
+    selectText txtName
 End Sub
 
 Private Sub txtName_KeyDown(KeyCode As Integer, Shift As Integer)

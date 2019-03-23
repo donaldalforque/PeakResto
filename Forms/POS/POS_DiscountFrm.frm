@@ -223,7 +223,7 @@ Private Sub btnAccept_Click()
         Dim Total As Double
         Dim SeniorDiscount As Double
         Dim TotalTax As Double
-        Dim TotalItems As Double
+        Dim totalItems As Double
         Dim TaxPerPerson As Double
         Dim TaxForSenior As Double
         Dim TotalNetOfVat As Double
@@ -247,6 +247,10 @@ Private Sub btnAccept_Click()
             item.SubItems(15) = "Senior"
         Next
         
+        'CHECK ITEMS FOR POSSIBLE OVER DISCOUNT
+       CheckOverDiscount
+       CheckOverDiscount
+        
         POS_CashierFrm.CountTotal
         POS_CashierFrm.CountTax
         Unload Me
@@ -267,10 +271,34 @@ Private Sub btnAccept_Click()
         POS_CashierFrm.lvList.SelectedItem.SubItems(15) = lvDiscount.SelectedItem.SubItems(2)
     End If
     
+    
     POS_CashierFrm.CountTotal
     POS_CashierFrm.CountTax
     Unload Me
 End Sub
+Private Sub CheckOverDiscount()
+     Dim over As Double
+        With POS_CashierFrm
+            For Each item In .lvList.ListItems
+                If over > 0 Then
+                    item.SubItems(4) = FormatNumber(NVAL(item.SubItems(4)) + over, 2, vbTrue, vbFalse)
+                    item.SubItems(17) = NVAL(item.SubItems(17)) + over
+                    over = 0
+                End If
+                If NVAL(item.SubItems(3)) < NVAL(item.SubItems(4)) Then
+                    'subract the over discount
+                    over = NVAL(item.SubItems(4)) - NVAL(item.SubItems(3))
+                    item.SubItems(4) = FormatNumber(NVAL(item.SubItems(4)) - over, 2, vbTrue, vbFalse)
+                End If
+            Next
+            If over > 0 Then
+                .lvList.ListItems.item(1).SubItems(4) = FormatNumber(NVAL(.lvList.ListItems.item(1).SubItems(4)) + over, 2, vbTrue, vbFalse)
+                .lvList.ListItems.item(1).SubItems(17) = NVAL(.lvList.ListItems.item(1).SubItems(17)) + over
+            End If
+        End With
+End Sub
+    
+
 
 Private Sub btnCancel_Click()
     Unload Me
@@ -292,3 +320,4 @@ Private Sub Form_Load()
     lvDiscount.ColumnHeaders(5).width = lvDiscount.width * 0.3133
     Populate "Term"
 End Sub
+

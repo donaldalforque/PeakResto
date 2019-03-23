@@ -507,7 +507,7 @@ End Sub
 Private Sub btnAccept_Click()
     POS_ConfirmPaymentFrm.Show (1)
     If AllowAccess = False Then Exit Sub
-  On Error GoTo ErrMessage
+  'On Error GoTo ErrMessage
     btnAccept.Enabled = False
   
     'SAVE CASH DETAILS
@@ -773,6 +773,9 @@ Private Sub btnAccept_Click()
         
         Unload POS_SavingFrm
         Dim x As Variant
+        
+        DefaultPrinter (POSPrinter)
+        
         x = MsgBox("Do you want to print a receipt?", vbQuestion + vbYesNo)
         If x = vbYes Then
             '**PRINT RECEIPT******
@@ -805,23 +808,61 @@ Private Sub btnAccept_Click()
             If isFastfood = "True" Then
                 For x = 1 To Val(PrintOptionCount)
                     '**PRINT OTHER COPY**
-                    'Dim crxApp As New CRAXDRT.Application
-                    'Dim crxRpt As New CRAXDRT.Report
-                    Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_OrderReceipt_Copy.rpt")
-                    crxRpt.RecordSelectionFormula = "{POS_Order.POS_OrderId}= " & Val(POS_CashierFrm.POSOrderId) & ""
+                    Dim strSQL As String
+                    
+                    
+                    If x = 1 Then DefaultPrinter (Printer1)
+                    If x = 2 Then DefaultPrinter (Printer2)
+                    If x = 3 Then DefaultPrinter (Printer3)
+                    
+                    If x = 1 Then Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_OrderReceipt_Copy1.rpt")
+                    If x = 2 Then Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_OrderReceipt_Copy2.rpt")
+                    If x = 3 Then Set crxRpt = crxApp.OpenReport(App.Path & "\Reports\POS_OrderReceipt_Copy3.rpt")
+                    
+                    If CategoryFilter1 > 0 Then
+                        If x = 1 Then
+                            crxRpt.RecordSelectionFormula = "({POS_Order.POS_OrderId}= " & Val(POS_CashierFrm.POSOrderId) & " AND {BASE_Product.CategoryId} = " & Val(CategoryFilter1) & ")"
+                        End If
+                    End If
+                    
+                    If CategoryFilter2 > 0 Then
+                        If x = 2 Then
+                            crxRpt.RecordSelectionFormula = "({POS_Order.POS_OrderId}= " & Val(POS_CashierFrm.POSOrderId) & " AND {BASE_Product.CategoryId} = " & Val(CategoryFilter2) & ")"
+                        End If
+                    End If
+                    
+                    If CategoryFilter3 > 0 Then
+                        If x = 3 Then
+                            crxRpt.RecordSelectionFormula = "({POS_Order.POS_OrderId}= " & Val(POS_CashierFrm.POSOrderId) & " AND {BASE_Product.CategoryId} = " & Val(CategoryFilter3) & ")"
+                        End If
+                    End If
+                    
                     crxRpt.DiscardSavedData
                     crxRpt.EnableParameterPrompting = False
                     crxRpt.ParameterFields(1).AddCurrentValue ""
+                    
                     If x = 1 Then crxRpt.ParameterFields(2).AddCurrentValue PrintLabel1
                     If x = 2 Then crxRpt.ParameterFields(2).AddCurrentValue PrintLabel2
                     If x = 3 Then crxRpt.ParameterFields(2).AddCurrentValue PrintLabel3
                 
                     Call ResetRptDB(crxRpt)
-                    crxRpt.PrintOut False
+                    
+                    If x = 1 And CountCategory(CategoryFilter1, POS_CashierFrm.lvList) = True Then
+                        crxRpt.PrintOut False
+                    End If
+                    If x = 2 And CountCategory(CategoryFilter2, POS_CashierFrm.lvList) = True Then
+                        crxRpt.PrintOut False
+                    End If
+                    If x = 3 And CountCategory(CategoryFilter3, POS_CashierFrm.lvList) = True Then
+                        crxRpt.PrintOut False
+                    End If
+                    
                     '**END PRINT OTHER COPY**
                 Next x
             End If
         End If
+        
+        DefaultPrinter (POSPrinter)
         
         If PrintDiscount = "True" Then
             If TotalDiscount > 0 Then

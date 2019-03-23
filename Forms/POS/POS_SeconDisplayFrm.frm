@@ -17,19 +17,6 @@ Begin VB.Form POS_SecondDisplayFrm
       Left            =   13680
       Top             =   0
    End
-   Begin VB.PictureBox picAds 
-      Appearance      =   0  'Flat
-      BackColor       =   &H80000005&
-      BorderStyle     =   0  'None
-      ForeColor       =   &H80000008&
-      Height          =   8295
-      Left            =   120
-      ScaleHeight     =   8295
-      ScaleWidth      =   6975
-      TabIndex        =   6
-      Top             =   2160
-      Width           =   6975
-   End
    Begin VB.Frame FRE_Details 
       BackColor       =   &H00FFFFFF&
       BorderStyle     =   0  'None
@@ -54,7 +41,7 @@ Begin VB.Form POS_SecondDisplayFrm
          ForeColor       =   &H00800000&
          Height          =   435
          Left            =   120
-         TabIndex        =   7
+         TabIndex        =   6
          Top             =   1080
          Width           =   3855
       End
@@ -146,7 +133,7 @@ Begin VB.Form POS_SecondDisplayFrm
       Appearance      =   0
       BeginProperty Font {0BE35203-8F91-11CE-9DE3-00AA004BB851} 
          Name            =   "Calibri"
-         Size            =   14.25
+         Size            =   18
          Charset         =   0
          Weight          =   400
          Underline       =   0   'False
@@ -261,6 +248,13 @@ Begin VB.Form POS_SecondDisplayFrm
          Text            =   "TaxExempt"
          Object.Width           =   0
       EndProperty
+   End
+   Begin VB.Image picAds 
+      Height          =   8295
+      Left            =   120
+      Stretch         =   -1  'True
+      Top             =   2160
+      Width           =   6975
    End
    Begin VB.Label txtTotal 
       Alignment       =   1  'Right Justify
@@ -805,6 +799,10 @@ End Sub
 
 Private Sub Form_Load()
     Initialize
+    
+    On Error Resume Next
+    'Load Ads
+    picAds.Picture = LoadPicture(App.Path & "\images\seconddisplay\ads.jpg")
 End Sub
 
 Private Sub txtQuantity_Change()

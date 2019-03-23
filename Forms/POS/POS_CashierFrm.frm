@@ -24,6 +24,11 @@ Begin VB.Form POS_CashierFrm
    ShowInTaskbar   =   0   'False
    StartUpPosition =   2  'CenterScreen
    WindowState     =   2  'Maximized
+   Begin VB.Timer timer_seconddisplay 
+      Interval        =   1
+      Left            =   13800
+      Top             =   120
+   End
    Begin VB.Timer timer_main 
       Interval        =   60000
       Left            =   14280
@@ -815,7 +820,7 @@ Begin VB.Form POS_CashierFrm
          Italic          =   0   'False
          Strikethrough   =   0   'False
       EndProperty
-      NumItems        =   21
+      NumItems        =   22
       BeginProperty ColumnHeader(1) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          Text            =   "Name"
          Object.Width           =   0
@@ -921,6 +926,11 @@ Begin VB.Form POS_CashierFrm
       BeginProperty ColumnHeader(21) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
          SubItemIndex    =   20
          Text            =   "TaxExempt"
+         Object.Width           =   0
+      EndProperty
+      BeginProperty ColumnHeader(22) {BDD1F052-858B-11D1-B16A-00C0F0283628} 
+         SubItemIndex    =   21
+         Text            =   "CategoryId"
          Object.Width           =   0
       EndProperty
    End
@@ -1288,9 +1298,7 @@ Private Sub btnNull_Click()
 '        'INV_NewProductFrm.MDIChild = False
 '        INV_NewProductFrm.Show
 '    End If
-    If ShowSecondDisplay = True Then
-        POS_SecondDisplayFrm.Show
-    End If
+    
 End Sub
 
 Private Sub btnOrders_Click()
@@ -1462,6 +1470,10 @@ Private Sub btnZreading_Click()
 End Sub
 
 Private Sub Form_Activate()
+    If SecondDisplayActivated = False Then
+        SecondDisplayActivated = True
+    End If
+    
     FRE_Controls.Top = Me.Height - FRE_Controls.Height - 150
     FRE_Details.Top = FRE_Controls.Top - FRE_Details.Height
     lvList.Height = FRE_Controls.Top - lvList.Top - FRE_Details.Height - 50
@@ -1663,6 +1675,7 @@ Private Sub Form_Load()
     ClearClassData (1)
     ClearClassData (2)
     ClearClassData (3)
+
 End Sub
 
 Private Sub txtQuantity_Change()
@@ -1701,6 +1714,10 @@ Private Sub timer_main_Timer()
 '        'MsgBox "test"
 '        'Do Nothing
 '    End If
+End Sub
+
+Private Sub timer_seconddisplay_Timer()
+        ShowSecondDisplayScreen
 End Sub
 
 Private Sub txtBarcode_GotFocus()
@@ -1765,6 +1782,7 @@ Public Sub txtBarcode_KeyDown(KeyCode As Integer, Shift As Integer)
                                 item.SubItems(12) = rec!price3
                                 item.SubItems(13) = rec!Percentage
                                 item.SubItems(16) = "1.00"
+                                item.SubItems(21) = rec!CategoryId
                                 'item.SubItems(14) = item.SubItems(5) - (item.SubItems(5) / ((item.SubItems(13) + 100) / 100))
                                 
                                 
@@ -1796,3 +1814,15 @@ Public Sub txtBarcode_KeyDown(KeyCode As Integer, Shift As Integer)
             'btnQuantity_Click
     End Select
 End Sub
+
+Public Sub ShowSecondDisplayScreen()
+    On Error Resume Next
+    If SecondDisplayActivated = True Then
+        If ShowSecondDisplay = True Then
+            POS_SecondDisplayFrm.Show
+            POS_CashierFrm.Show
+        End If
+        timer_seconddisplay.Enabled = False
+    End If
+End Sub
+

@@ -107,7 +107,7 @@ Private Sub btnAccept_Click()
             If item.SubItems(8) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(5) _
                 And item.SubItems(2) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(12) Then
                 
-                item.SubItems(1) = FormatNumber(Val(item.SubItems(1)) + Val(Replace(txtQuantity.text, ",", "")), 2, vbTrue, vbFalse)
+                item.SubItems(1) = FormatNumber(Val(item.SubItems(1)) + Val(Replace(txtQuantity.Text, ",", "")), 2, vbTrue, vbFalse)
                 'isFound = True
                 POS_CashierFrm.CountTotal
                 POS_CashierFrm.CountTax
@@ -117,8 +117,8 @@ Private Sub btnAccept_Click()
             End If
         Next
         'Dim item As MSComctlLib.ListItem
-        Set item = POS_CashierFrm.lvList.ListItems.add(, , POS_ItemSearchFrm.lvItemSearch.SelectedItem.text)
-            item.SubItems(1) = FormatNumber(txtQuantity.text, 2, vbTrue, vbFalse)
+        Set item = POS_CashierFrm.lvList.ListItems.add(, , POS_ItemSearchFrm.lvItemSearch.SelectedItem.Text)
+            item.SubItems(1) = FormatNumber(txtQuantity.Text, 2, vbTrue, vbFalse)
             item.SubItems(2) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(12) 'UOM
             item.SubItems(3) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(1)
             item.SubItems(7) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(3)
@@ -130,13 +130,14 @@ Private Sub btnAccept_Click()
             item.SubItems(6) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(10) 'unitcost
             item.SubItems(13) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(11)
             item.SubItems(16) = "1.00"
+            item.SubItems(21) = POS_ItemSearchFrm.lvItemSearch.SelectedItem.SubItems(13) 'category
             item.Selected = True
             item.EnsureVisible
         POS_CashierFrm.CountTotal
         POS_CashierFrm.CountTax
         Unload Me
     Else
-        POS_CashierFrm.lvList.SelectedItem.SubItems(1) = FormatNumber(txtQuantity.text)
+        POS_CashierFrm.lvList.SelectedItem.SubItems(1) = FormatNumber(txtQuantity.Text)
         POS_CashierFrm.CountTotal
         POS_CashierFrm.CountTax
         isChangeQuantity = False
@@ -167,8 +168,8 @@ Private Sub Form_Load()
 End Sub
 
 Private Sub txtQuantity_Change()
-    If IsNumeric(txtQuantity.text) = False Then
-        txtQuantity.text = "1"
+    If IsNumeric(txtQuantity.Text) = False Then
+        txtQuantity.Text = "1"
         selectText txtQuantity
 '    Else
 '        txtQuantity.text = FormatNumber(txtQuantity.text, 0)
