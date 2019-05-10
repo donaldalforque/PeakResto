@@ -8,3 +8,7 @@ False
 True
 [DiningOptions]
 True
+[ServiceCharge]
+ON
+[ServiceValue]
+10

@@ -21,7 +21,8 @@ Public PrintLabel1, PrintLabel2, PrintLabel3 As String
 Public isFastfood, PrintDiscount, DiningOption As String
 Public AllowNegativeInventory, ShowSecondDisplay, SecondDisplayActivated As Boolean
 Public CategoryFilter1, CategoryFilter2, CategoryFilter3 As Long
-Public Printer1, Printer2, Printer3 As String
+Public Printer1, Printer2, Printer3, ServiceCharge As String
+Public ServiceChargeAmount As Double
 
 Public Function Hostname() As String
     'Get Hostname from Text
@@ -492,6 +493,10 @@ Public Function GetPOSPrinter() As String
     Input #1, PrintDiscount '[value]
     Input #1, DiningOption '[DiningOption]
     Input #1, DiningOption '[value]
+    Input #1, ServiceCharge 'ServiceCharge
+    Input #1, ServiceCharge '[value]
+    Input #1, ServiceChargeAmount 'ServiceChargeAmount
+    Input #1, ServiceChargeAmount '[value]
     Close #1
 End Function
 Public Function ViewAccessRights(ByVal ModuleId As Integer) As Boolean
@@ -876,10 +881,10 @@ Public Function OpenCashDrawer()
     Printer.EndDoc
 End Function
 
-Public Function CountCategory(ByVal categoryid As Integer, ByVal lv As ListView) As Boolean
+Public Function CountCategory(ByVal CategoryId As Integer, ByVal lv As ListView) As Boolean
     Dim item As MSComctlLib.ListItem
     For Each item In lv.ListItems
-        If Val(item.SubItems(21)) = categoryid Then
+        If Val(item.SubItems(21)) = CategoryId Then
             CountCategory = True
             Exit Function
         End If

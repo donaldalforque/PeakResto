@@ -337,6 +337,26 @@ Begin VB.Form POS_CashierFrm
       TabIndex        =   19
       Top             =   7440
       Width           =   15015
+      Begin VB.Label lblServiceCharge 
+         AutoSize        =   -1  'True
+         BackColor       =   &H00FFFFFF&
+         Caption         =   "|SERVICE CHARGE: "
+         BeginProperty Font 
+            Name            =   "Calibri"
+            Size            =   12
+            Charset         =   0
+            Weight          =   400
+            Underline       =   0   'False
+            Italic          =   0   'False
+            Strikethrough   =   0   'False
+         EndProperty
+         ForeColor       =   &H00800000&
+         Height          =   285
+         Left            =   3600
+         TabIndex        =   43
+         Top             =   300
+         Width           =   4200
+      End
       Begin VB.Label lblCashier 
          AutoSize        =   -1  'True
          BackColor       =   &H00FFFFFF&
@@ -358,11 +378,12 @@ Begin VB.Form POS_CashierFrm
          Width           =   1080
       End
       Begin VB.Label lblCustomer 
+         AutoSize        =   -1  'True
          BackColor       =   &H00FFFFFF&
          Caption         =   "|CUSTOMER: DONALD SOLIVEN ALFORQUE"
          BeginProperty Font 
             Name            =   "Calibri"
-            Size            =   14.25
+            Size            =   12
             Charset         =   0
             Weight          =   400
             Underline       =   0   'False
@@ -370,11 +391,11 @@ Begin VB.Form POS_CashierFrm
             Strikethrough   =   0   'False
          EndProperty
          ForeColor       =   &H00800000&
-         Height          =   435
+         Height          =   285
          Left            =   3600
          TabIndex        =   25
-         Top             =   140
-         Width           =   6855
+         Top             =   0
+         Width           =   4245
       End
       Begin VB.Label lblDate 
          Alignment       =   1  'Right Justify
@@ -991,6 +1012,7 @@ Public DiscountType As String
 Public Sub Initialize()
     'discount = "Distributor's Price"
     lblCustomer.Caption = "| CUSTOMER: NONE"
+    lblServiceCharge.Caption = "| SERVICE CHARGE: " & FormatNumber(ServiceChargeAmount, 2, vbTrue, vbFalse)
     lblDiscount.Caption = "| DISCOUNT TYPE: NONE"
     lblTotalItems.Caption = "ITEMS: 0"
     lblDate.Caption = "MM/DD/YY 00:00:00"
@@ -1053,7 +1075,12 @@ Public Sub CountTotal()
         txtTotal.Caption = txtTotal.Caption + NVAL(item.SubItems(5))
         totalQty = totalQty + NVAL(item.SubItems(1))
     Next
-    txtTotal.Caption = FormatNumber(txtTotal.Caption, 2, vbTrue)
+    Dim fee As Double
+    fee = ServiceChargeAmount
+    If ServiceCharge = "ON" Then fee = (fee / 100) Else ServiceChargeAmount = 0
+    lblServiceCharge.Caption = "| SERVICE CHARGE: " & FormatNumber(NVAL(txtTotal.Caption) * NVAL(fee), 2, vbTrue, vbFalse)
+    txtTotal.Caption = FormatNumber(NVAL(txtTotal.Caption) * (NVAL(fee + 1)), 2, vbTrue)
+    
     lblTotalItems.Caption = "TOTAL ITEMS: " & FormatNumber(totalQty, 2, vbTrue, vbFalse)
     
     If ShowSecondDisplay = True Then
@@ -1533,7 +1560,12 @@ Private Sub Form_Activate()
     btnNull.width = FRE_Controls.width - btnNull.Left - 100
     'lblDate.Left = lvList.width - lblDate.width - 120
     lblDate.Left = txtBarcode.width - lblDate.width - 120
-    lblCashier.Left = lblCustomer.Left + lblCustomer.width + 20
+    If POSCustomerId <> 0 Then
+        lblCashier.Left = lblCustomer.Left + lblCustomer.width + 500
+    Else
+        lblCashier.Left = lblServiceCharge.Left + lblServiceCharge.width + 500
+    End If
+    
     lblCashier.Caption = UCase("|CASHIER: " & CurrentUser)
     
     lvList.ColumnHeaders(1).width = lvList.width * 0.344
